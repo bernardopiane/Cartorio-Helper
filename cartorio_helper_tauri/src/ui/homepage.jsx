@@ -150,12 +150,6 @@ function Homepage() {
     }
   }
 
-  /**
-   * Returns the protocolo for a given XML node.
-   *
-   * @param {Element} child The XML node to get the protocolo for
-   * @returns {string} The protocolo for the given XML node
-   */
   function getProtocolo(child) {
     // If child has a NumeroDocumento, return it
     if (child.getAttribute('NumeroDocumento')) {
@@ -165,10 +159,6 @@ function Homepage() {
     return '';
   }
 
-  /**
-   * Formats the text by removing all break lines and replacing double quotes
-   * with single quotes.
-   */
   function formatText() {
     console.log("Formatando texto");
     let corpo = document.getElementById('corpo').value;
@@ -192,11 +182,6 @@ function Homepage() {
     console.log(matricula);
   }
 
-  /**
-   * Updates the data array with the given data array.
-   *
-   * @param {Array} dataArray The data array to update with
-   */
   function updateData(dataArray) {
     // Filter out any records that are already in the data array
     const newData = dataArray.filter(record => !data.some(item => item.selo === record.selo));
