@@ -5,6 +5,8 @@ import { Column } from 'primereact/column';
 function Homepage() {
   const [data, setData] = React.useState([]);
   const [file, setFile] = React.useState(null);
+  const [corpo, setCorpo] = React.useState('');
+  const [matricula, setMatricula] = React.useState('');
 
   function handleFileChange(e) {
     if (!e.target.files[0]) return;
@@ -132,9 +134,36 @@ function Homepage() {
         return "3017";
       case 'TranscricaoCasamento':
         return "3007";
+
+      // InterdicoesTutelas
+      case 'CertidaoGenerica':
+        return "8020";
       default:
         return '';
     }
+  }
+
+  function formatText() {
+    console.log("Formatando texto");
+    let corpo = document.getElementById('corpo').value;
+    let matricula = document.getElementById('matricula').value;
+
+    // Removes all break lines
+    corpo = corpo.replace(/\n/g, '');
+    matricula = matricula.replace(/\n/g, '');
+
+    // Replaces double quotes with single quotes
+    corpo = corpo.replace(/"/g, "'");
+    matricula = matricula.replace(/"/g, "'");
+
+    // Remove all dots
+    matricula = matricula.replace(/\./g, '');
+
+    // Updates the input fields
+    setCorpo(corpo);
+    console.log(corpo);
+    setMatricula(matricula);
+    console.log(matricula);
   }
 
   return (
@@ -167,6 +196,23 @@ function Homepage() {
         <Column field="issqn" header="ISSQN" sortable ></Column>
         <Column field="fiscalização" header="Fiscalização" sortable ></Column>
       </DataTable>
+
+      {/* Text Formating */}
+      <div id="text-formating">
+        <h2>Formatação de Texto</h2>
+
+        <div>
+          <label htmlFor="matricula">Matrícula:</label>
+          <input type="text" id="matricula" onChange={(e) => setMatricula(e.target.value)} value={matricula} />
+        </div>
+
+        <div>
+          <label htmlFor="corpo">Corpo:</label>
+          <textarea id="corpo" onChange={(e) => setCorpo(e.target.value)} value={corpo}></textarea>
+        </div>
+        
+        <button onClick={() => formatText()}>Formatar</button>
+      </div>
     </div>
   );
 }
