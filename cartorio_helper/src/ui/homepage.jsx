@@ -42,9 +42,16 @@ function Homepage() {
       const doc = parser.parseFromString(tempData, 'text/xml');
 
       // Get the data from the XML file
+      // If doc contains InterdicoesTutelas, then it is a InterdicoesTutelas file
+      let isRCPN = false;
+      if (doc.getElementsByTagName('CivilPessoasNaturais').length > 0) {
+        console.log("Is RCPN");
+        isRCPN = true;
+      }
+
       // Iterate through all the children from the Remessa node
-      const remessa = doc.getElementsByTagName('Remessa')[0];
-      const children = remessa.children;
+      let remessa = doc.getElementsByTagName('Remessa')[0];
+      let children = remessa.children;
 
       console.log(children);
       // Create a data array to hold the extracted information
@@ -56,7 +63,7 @@ function Homepage() {
 
         // Extract common attributes that might be present in different certificate types
         if (child.hasAttribute('Selo')) {
-          const recordData = getRecordData(child);
+          const recordData = getRecordData(child, isRCPN);
 
           console.log(recordData);
 
@@ -69,15 +76,37 @@ function Homepage() {
     }
   }
 
-  function getRecordData(child) {
+  function getRecordData(child, isRCPN) {
     const recordData = {
-      selo: child.getAttribute('Selo'),
+      selo: child.getAttribute('Selo').slice(-5), //Only gets the last 5 digits
       codigo: getCodigo(child),
-      aleatorio: child.getAttribute('Aleatorio') || '',
+      rcpn: isRCPN ? 'X' : '',
+      rit: isRCPN ? '' : 'X',
+      protocolo: '', // Cannot be extracted from the XML
+      dataEntrada: '', // Cannot be extracted from the XML
+      pago: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ? 'X' : '', //If Emolumentos has a child ItemEmolumento, then it is paid
+      gratuito: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length === 0 ? 'X' : '', //If Emolumentos does not have a child ItemEmolumento, then it is free
       livro: child.getAttribute('Livro'),
       folha: child.getAttribute('Folha'),
       termo: child.getAttribute('Termo'),
-      tipo: child.nodeName,
+      emolumentos: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
+        (child.getElementsByTagName('Emolumentos')[0].getAttribute('ValorTotalEmolumentos') || '') : '',
+      lei3217: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
+        (child.getElementsByTagName('Emolumentos')[0].getAttribute('FETJ') || '') : '',
+      lei4664: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
+        (child.getElementsByTagName('Emolumentos')[0].getAttribute('FUNDPERJ') || '') : '',
+      lei111: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
+        (child.getElementsByTagName('Emolumentos')[0].getAttribute('FUNPERJ') || '') : '',
+      funarpen: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
+        (child.getElementsByTagName('Emolumentos')[0].getAttribute('FUNARPEN') || '') : '',
+      mutua: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
+        (child.getElementsByTagName('Emolumentos')[0].getAttribute('ValorMutua') || '') : '',
+      acoterj: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
+        (child.getElementsByTagName('Emolumentos')[0].getAttribute('ValorAcoterj') || '') : '',
+      issqn: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
+        (child.getElementsByTagName('Emolumentos')[0].getAttribute('ValorISS') || '') : '',
+      seloEletronico: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
+        (child.getElementsByTagName('Emolumentos')[0].getAttribute('ValorSeloEletronico') || '') : '',
     };
 
     return recordData;
