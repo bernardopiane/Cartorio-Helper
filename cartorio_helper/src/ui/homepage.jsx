@@ -30,88 +30,69 @@ function Homepage() {
   }
 
   async function loadData(file) {
-    var tempData = [];
     if (!file) return;
 
     try {
-      tempData = await readFileContent(file);
-    } catch (error) {
-      console.error("Error reading file:", error);
-      return;
-    } finally {
-      // Parse the XML file
+      const fileContent = await readFileContent(file);
       const parser = new DOMParser();
-      const doc = parser.parseFromString(tempData, 'text/xml');
-
-      // Get the data from the XML file
-      // If doc contains InterdicoesTutelas, then it is a InterdicoesTutelas file
-      let isRCPN = false;
-      if (doc.getElementsByTagName('CivilPessoasNaturais').length > 0) {
-        console.log("Is RCPN");
-        isRCPN = true;
+      const doc = parser.parseFromString(fileContent, 'text/xml');
+      
+      // Determine document type
+      const isRCPN = doc.getElementsByTagName('CivilPessoasNaturais').length > 0;
+      if (isRCPN) {
+        console.log("Document type: RCPN");
       }
 
-      // Iterate through all the children from the Remessa node
-      let remessa = doc.getElementsByTagName('Remessa')[0];
-      let children = remessa.children;
-
-      console.log(children);
-      // Create a data array to hold the extracted information
-      const dataArray = [];
-
-      // Iterate through children elements
-      for (let i = 0; i < children.length; i++) {
-        const child = children[i];
-
-        // Extract common attributes that might be present in different certificate types
-        if (child.hasAttribute('Selo')) {
-          const recordData = getRecordData(child, isRCPN);
-
-          console.log(recordData);
-
-          dataArray.push(recordData);
-        }
+      // Get all records with seals from the Remessa node
+      const remessa = doc.getElementsByTagName('Remessa')[0];
+      if (!remessa) {
+        console.error("No Remessa node found in XML");
+        return;
       }
-
+      
+      const dataArray = Array.from(remessa.children)
+        .filter(child => child.hasAttribute('Selo'))
+        .map(child => getRecordData(child, isRCPN));
+      
+      console.log("Processed records:", dataArray.length);
       setData(dataArray);
-
+    } catch (error) {
+      console.error("Error processing file:", error);
     }
   }
 
   function getRecordData(child, isRCPN) {
-    const recordData = {
-      selo: child.getAttribute('Selo').slice(-5), //Only gets the last 5 digits
+    // Get Emolumentos node once to avoid repetitive DOM access
+    const emolumentosNode = child.getElementsByTagName('Emolumentos')[0];
+    const hasEmolumentos = emolumentosNode && emolumentosNode.getElementsByTagName('ItemEmolumento').length > 0;
+
+    // Helper function to get attribute value safely
+    const getEmolumentoValue = (attributeName) => {
+      return hasEmolumentos ? (emolumentosNode.getAttribute(attributeName) || '') : '';
+    };
+
+    return {
+      selo: child.getAttribute('Selo')?.slice(-5) || '', // Only gets the last 5 digits
       codigo: getCodigo(child),
       rcpn: isRCPN ? 'X' : '',
       rit: isRCPN ? '' : 'X',
       protocolo: '', // Cannot be extracted from the XML
       dataEntrada: '', // Cannot be extracted from the XML
-      pago: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ? 'X' : '', //If Emolumentos has a child ItemEmolumento, then it is paid
-      gratuito: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length === 0 ? 'X' : '', //If Emolumentos does not have a child ItemEmolumento, then it is free
-      livro: child.getAttribute('Livro'),
-      folha: child.getAttribute('Folha'),
-      termo: child.getAttribute('Termo'),
-      emolumentos: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
-        (child.getElementsByTagName('Emolumentos')[0].getAttribute('ValorTotalEmolumentos') || '') : '',
-      lei3217: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
-        (child.getElementsByTagName('Emolumentos')[0].getAttribute('FETJ') || '') : '',
-      lei4664: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
-        (child.getElementsByTagName('Emolumentos')[0].getAttribute('FUNDPERJ') || '') : '',
-      lei111: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
-        (child.getElementsByTagName('Emolumentos')[0].getAttribute('FUNPERJ') || '') : '',
-      funarpen: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
-        (child.getElementsByTagName('Emolumentos')[0].getAttribute('FUNARPEN') || '') : '',
-      mutua: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
-        (child.getElementsByTagName('Emolumentos')[0].getAttribute('ValorMutua') || '') : '',
-      acoterj: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
-        (child.getElementsByTagName('Emolumentos')[0].getAttribute('ValorAcoterj') || '') : '',
-      issqn: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
-        (child.getElementsByTagName('Emolumentos')[0].getAttribute('ValorISS') || '') : '',
-      seloEletronico: child.getElementsByTagName('Emolumentos')[0].getElementsByTagName('ItemEmolumento').length > 0 ?
-        (child.getElementsByTagName('Emolumentos')[0].getAttribute('ValorSeloEletronico') || '') : '',
+      pago: hasEmolumentos ? 'X' : '',
+      gratuito: hasEmolumentos ? '' : 'X',
+      livro: child.getAttribute('Livro') || '',
+      folha: child.getAttribute('Folha') || '',
+      termo: child.getAttribute('Termo') || '',
+      emolumentos: getEmolumentoValue('ValorTotalEmolumentos') || '',
+      lei3217: getEmolumentoValue('FETJ') || '',
+      lei4664: getEmolumentoValue('FUNDPERJ') || '',
+      lei111: getEmolumentoValue('FUNPERJ') || '',
+      funarpen: getEmolumentoValue('FUNARPEN') || '',
+      mutua: getEmolumentoValue('ValorMutua') || '',
+      acoterj: getEmolumentoValue('ValorAcoterj') || '',
+      issqn: getEmolumentoValue('ValorISS') || '',
+      seloEletronico: getEmolumentoValue('ValorSeloEletronico') || '',
     };
-
-    return recordData;
   }
 
   function getCodigo(child) {
@@ -210,7 +191,7 @@ function Homepage() {
           <label htmlFor="corpo">Corpo:</label>
           <textarea id="corpo" onChange={(e) => setCorpo(e.target.value)} value={corpo}></textarea>
         </div>
-        
+
         <button onClick={() => formatText()}>Formatar</button>
       </div>
     </div>
