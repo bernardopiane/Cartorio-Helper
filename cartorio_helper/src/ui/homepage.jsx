@@ -67,7 +67,7 @@ function Homepage() {
   function getRecordData(child, isRCPN) {
     // Get Emolumentos node once to avoid repetitive DOM access
     const emolumentosNode = child.getElementsByTagName('Emolumentos')[0];
-    const hasEmolumentos = emolumentosNode && emolumentosNode.getElementsByTagName('ItemEmolumento').length > 0;
+    const hasEmolumentos = emolumentosNode && (emolumentosNode.getElementsByTagName('ItemEmolumento').length > 0 || emolumentosNode.getAttribute('TipoCobranca') == "CC");
 
     // Helper function to get attribute value safely
     const getEmolumentoValue = (attributeName) => {
