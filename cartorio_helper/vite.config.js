@@ -10,5 +10,14 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: true
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://www.transparencia.cremerj.org.br:8098',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/planejamento/registroMedico')
+      }
+    }
   }
 });

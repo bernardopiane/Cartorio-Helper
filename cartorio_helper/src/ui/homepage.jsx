@@ -10,6 +10,10 @@ function Homepage() {
   const [file, setFile] = React.useState(null);
   const [corpo, setCorpo] = React.useState('');
   const [matricula, setMatricula] = React.useState('');
+  const [crm, setCRM] = React.useState('');
+
+  const [captcha, setCaptcha] = React.useState('');
+  const [captchaImage, setCaptchaImage] = React.useState('');
 
   function handleFileChange(e) {
     if (!e.target.files[0]) return;
@@ -168,6 +172,62 @@ function Homepage() {
     setData([...data, ...newData]);
   }
 
+  function searchCRM() {
+    console.log("Buscando CRMERJ");
+    let crm = document.getElementById('crm').value;
+    console.log(crm);
+
+    // Use Vite's proxy configuration
+    fetch('/api/pesquisar', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `numero=${encodeURIComponent(crm)}`
+    })
+      .then(response => response.text())
+      .then(data => {
+        console.log("data: ", data);
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(data, 'text/html');
+        const captcha = doc.querySelector('img[src*="Captcha"]').src;
+        console.log("captcha: ", captcha);
+
+      })
+      .then(async () => {
+        const response2 = await fetch("/api/pesquisar", {
+          "credentials": "include",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.5",
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Upgrade-Insecure-Requests": "1",
+            "Priority": "u=0, i",
+            "Pragma": "no-cache",
+            "Cache-Control": "no-cache"
+          },
+          "referrer": "http://www.transparencia.cremerj.org.br:8098/planejamento/registroMedico/pesquisar",
+          "body": `pesquisa=${crm}&captcha=${captcha}`,
+          "method": "POST",
+          "mode": "cors"
+        });
+
+        const doc2 = await response2.text();
+        console.log("doc2: ", doc2);
+
+      })
+      .then(() => {
+        // Parse the doc2 to get the doctor information
+        const parser = new DOMParser();
+        const doc2 = parser.parseFromString(doc2, 'text/html');
+        // TODO: Get the doctor information from the doc2
+      })
+      .catch(error => {
+        console.error("Error fetching data:", error);
+      });
+  }
+
   return (
     <div>
       <h1>Homepage</h1>
@@ -256,6 +316,40 @@ function Homepage() {
           icon="pi pi-check"
           label="Formatar Texto"
         />
+      </div>
+
+      {/* Consulta CRMERJ Section */}
+      <div id="crm" className="p-4 mt-4 border rounded">
+        <div className="field mb-3">
+          <label htmlFor="crm" className="mb-3">Consulta CRMERJ</label>
+          <InputText
+            id="crm"
+            onChange={(e) => setCRM(e.target.value)}
+            value={crm}
+            className="w-full mb-2"
+            placeholder="Digite o CRMERJ aqui"
+          />
+        </div>
+
+        <div className="field mb-3">
+          <img src="http://www.transparencia.cremerj.org.br:8098/simpleCaptcha.png" alt="Captcha" />
+          <label htmlFor="captcha" className="mb-3">Captcha</label>
+          <InputText
+            id="captcha"
+            onChange={(e) => setCaptcha(e.target.value)}
+            value={captcha}
+            className="mb-2"
+            placeholder="Digite o captcha aqui"
+          />
+        </div>
+
+        <Button
+          onClick={() => searchCRM()}
+          className="mt-2"
+          icon="pi pi-search"
+          label="Buscar"
+        />
+
       </div>
     </div>
   );
