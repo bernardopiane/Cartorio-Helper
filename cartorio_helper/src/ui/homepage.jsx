@@ -79,7 +79,7 @@ function Homepage() {
       codigo: getCodigo(child),
       rcpn: isRCPN ? 'X' : '',
       rit: isRCPN ? '' : 'X',
-      protocolo: '', // Cannot be extracted from the XML
+      protocolo: getProtocolo(child),
       dataEntrada: '', // Cannot be extracted from the XML
       pago: hasEmolumentos ? 'X' : '',
       gratuito: hasEmolumentos ? '' : 'X',
@@ -104,6 +104,8 @@ function Homepage() {
         return "3001";
       case 'RegistroObito':
         return "3002";
+      case 'RegistroCasamento':
+        return "3004";
       case 'CertidaoNascimento':
         return "3017";
       case 'CertidaoCRCNacional':
@@ -125,6 +127,15 @@ function Homepage() {
       default:
         return '';
     }
+  }
+
+  function getProtocolo(child) {
+    // If child has a NumeroDocumento, return it
+    if (child.getAttribute('NumeroDocumento')) {
+      return child.getAttribute('NumeroDocumento');
+    }
+
+    return '';
   }
 
   function formatText() {
@@ -208,7 +219,7 @@ function Homepage() {
           <Column field="mutua" header="Mutua" />
           <Column field="acoterj" header="Acoterj" />
           <Column field="issqn" header="ISSQN" />
-          <Column field="fiscalização" header="Fiscalização" />
+          <Column field="seloEletronico" header="Selo Eletrônico" />
         </DataTable>
       </div>
 
