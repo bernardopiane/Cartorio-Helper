@@ -161,48 +161,90 @@ function Homepage() {
     <div>
       <h1>Homepage</h1>
 
-      {/* File picker */}
-      <input id="fileInput" type="file" onChange={handleFileChange} />
-      <Button onClick={() => loadData(file)}>Carregar</Button>
+      {/* File upload section */}
+      <div className="file-upload-section p-4 mb-4 border rounded bg-gray-50">
+        <h2 className="mb-3">Importar Arquivo XML</h2>
+        <div className="flex items-center gap-3">
+          <input
+            id="fileInput"
+            type="file"
+            onChange={handleFileChange}
+            className="p-2 border rounded"
+          />
+          <Button
+            onClick={() => loadData(file)}
+            icon="pi pi-upload"
+            label="Carregar"
+            disabled={!file}
+          />
+        </div>
+      </div>
 
-      <DataTable value={data} tableStyle={{ minWidth: '50rem' }}>
-        <Column field="selo" header="Selo" sortable ></Column>
-        <Column field="codigo" header="Código" ></Column>
-        <Column field="rcpn" header="RCPN" ></Column>
-        <Column field="rit" header="RIT" ></Column>
-        <Column field="protocolo" header="Protocolo" ></Column>
-        <Column field="dataEntrada" header="Data de Entrada" ></Column>
-        <Column field="pago" header="Pago" ></Column>
-        <Column field="gratuito" header="Gratuito" ></Column>
-        <Column field="livro" header="Livro" ></Column>
-        <Column field="folha" header="Folha" ></Column>
-        <Column field="termo" header="Termo" ></Column>
-        <Column field="emolumentos" header="Emolumentos" ></Column>
-        <Column field="lei3217" header="Lei 3217" ></Column>
-        <Column field="lei4664" header="Lei 4664" ></Column>
-        <Column field="lei111" header="Lei 111"  ></Column>
-        <Column field="funarpen" header="Funarpen"  ></Column>
-        <Column field="mutua" header="Mutua"  ></Column>
-        <Column field="acoterj" header="Acoterj"  ></Column>
-        <Column field="issqn" header="ISSQN"  ></Column>
-        <Column field="fiscalização" header="Fiscalização"  ></Column>
-      </DataTable>
+      {/* Data table */}
+      <div className="data-table-container mt-4">
+        <h2 className="mb-3">Dados Importados</h2>
+        <DataTable
+          value={data}
+          tableStyle={{ minWidth: '50rem' }}
+          emptyMessage="Nenhum dado carregado"
+          className="p-datatable-sm"
+        >
+          <Column field="selo" header="Selo" sortable />
+          <Column field="codigo" header="Código" />
+          <Column field="rcpn" header="RCPN" />
+          <Column field="rit" header="RIT" />
+          <Column field="protocolo" header="Protocolo" />
+          <Column field="dataEntrada" header="Data de Entrada" />
+          <Column field="pago" header="Pago" />
+          <Column field="gratuito" header="Gratuito" />
+          <Column field="livro" header="Livro" />
+          <Column field="folha" header="Folha" />
+          <Column field="termo" header="Termo" />
+          <Column field="emolumentos" header="Emolumentos" />
+          <Column field="lei3217" header="Lei 3217" />
+          <Column field="lei4664" header="Lei 4664" />
+          <Column field="lei111" header="Lei 111" />
+          <Column field="funarpen" header="Funarpen" />
+          <Column field="mutua" header="Mutua" />
+          <Column field="acoterj" header="Acoterj" />
+          <Column field="issqn" header="ISSQN" />
+          <Column field="fiscalização" header="Fiscalização" />
+        </DataTable>
+      </div>
 
-      {/* Text Formating */}
-      <div id="text-formating">
-        <h2>Formatação de Texto</h2>
+      {/* Text Formatting Section */}
+      <div id="text-formatting" className="p-4 mt-4 border rounded">
+        <h2 className="mb-3">Formatação de Texto</h2>
 
-        <div>
-          <label htmlFor="matricula">Matrícula:</label>
-          <InputText id="matricula" onChange={(e) => setMatricula(e.target.value)} value={matricula} />
+        <div className="field mb-3">
+          <label htmlFor="matricula" className="block mb-2">Matrícula:</label>
+          <InputText
+            id="matricula"
+            onChange={(e) => setMatricula(e.target.value)}
+            value={matricula}
+            className="w-full"
+            placeholder="Digite a matrícula aqui"
+          />
         </div>
 
-        <div>
-          <label htmlFor="corpo">Corpo:</label>
-          <InputTextarea id="corpo" onChange={(e) => setCorpo(e.target.value)} value={corpo} />
+        <div className="field mb-3">
+          <label htmlFor="corpo" className="block mb-2">Corpo:</label>
+          <InputTextarea
+            id="corpo"
+            onChange={(e) => setCorpo(e.target.value)}
+            value={corpo}
+            className="w-full"
+            rows={5}
+            placeholder="Digite o texto a ser formatado"
+          />
         </div>
 
-        <Button onClick={() => formatText()}>Formatar</Button>
+        <Button
+          onClick={() => formatText()}
+          className="mt-2"
+          icon="pi pi-check"
+          label="Formatar Texto"
+        />
       </div>
     </div>
   );
