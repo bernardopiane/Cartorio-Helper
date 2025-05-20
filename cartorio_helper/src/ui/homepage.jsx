@@ -1,6 +1,9 @@
 import React from 'react';
-import { DataTable } from 'primereact/datatable';
+import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
+import { DataTable } from 'primereact/datatable';
+import { InputText } from 'primereact/inputtext';
+import { InputTextarea } from 'primereact/inputtextarea';
 
 function Homepage() {
   const [data, setData] = React.useState([]);
@@ -36,7 +39,7 @@ function Homepage() {
       const fileContent = await readFileContent(file);
       const parser = new DOMParser();
       const doc = parser.parseFromString(fileContent, 'text/xml');
-      
+
       // Determine document type
       const isRCPN = doc.getElementsByTagName('CivilPessoasNaturais').length > 0;
       if (isRCPN) {
@@ -49,13 +52,13 @@ function Homepage() {
         console.error("No Remessa node found in XML");
         return;
       }
-      
+
       const dataArray = Array.from(remessa.children)
         .filter(child => child.hasAttribute('Selo'))
         .map(child => getRecordData(child, isRCPN));
-      
+
       console.log("Processed records:", dataArray.length);
-      setData(dataArray);
+      updateData(dataArray);
     } catch (error) {
       console.error("Error processing file:", error);
     }
@@ -147,35 +150,42 @@ function Homepage() {
     console.log(matricula);
   }
 
+  function updateData(dataArray) {
+    // Filter out any records that are already in the data array
+    const newData = dataArray.filter(record => !data.some(item => item.selo === record.selo));
+
+    setData([...data, ...newData]);
+  }
+
   return (
     <div>
       <h1>Homepage</h1>
 
       {/* File picker */}
       <input id="fileInput" type="file" onChange={handleFileChange} />
-      <button onClick={() => loadData(file)}>Carregar</button>
+      <Button onClick={() => loadData(file)}>Carregar</Button>
 
       <DataTable value={data} tableStyle={{ minWidth: '50rem' }}>
         <Column field="selo" header="Selo" sortable ></Column>
-        <Column field="codigo" header="Código" sortable ></Column>
-        <Column field="rcpn" header="RCPN" sortable ></Column>
-        <Column field="rit" header="RIT" sortable ></Column>
-        <Column field="protocolo" header="Protocolo" sortable ></Column>
-        <Column field="dataEntrada" header="Data de Entrada" sortable ></Column>
-        <Column field="pago" header="Pago" sortable ></Column>
-        <Column field="gratuito" header="Gratuito" sortable ></Column>
-        <Column field="livro" header="Livro" sortable ></Column>
-        <Column field="folha" header="Folha" sortable ></Column>
-        <Column field="termo" header="Termo" sortable ></Column>
-        <Column field="emolumentos" header="Emolumentos" sortable ></Column>
-        <Column field="lei3217" header="Lei 3217" sortable ></Column>
-        <Column field="lei4664" header="Lei 4664" sortable ></Column>
-        <Column field="lei111" header="Lei 111" sortable ></Column>
-        <Column field="funarpen" header="Funarpen" sortable ></Column>
-        <Column field="mutua" header="Mutua" sortable ></Column>
-        <Column field="acoterj" header="Acoterj" sortable ></Column>
-        <Column field="issqn" header="ISSQN" sortable ></Column>
-        <Column field="fiscalização" header="Fiscalização" sortable ></Column>
+        <Column field="codigo" header="Código" ></Column>
+        <Column field="rcpn" header="RCPN" ></Column>
+        <Column field="rit" header="RIT" ></Column>
+        <Column field="protocolo" header="Protocolo" ></Column>
+        <Column field="dataEntrada" header="Data de Entrada" ></Column>
+        <Column field="pago" header="Pago" ></Column>
+        <Column field="gratuito" header="Gratuito" ></Column>
+        <Column field="livro" header="Livro" ></Column>
+        <Column field="folha" header="Folha" ></Column>
+        <Column field="termo" header="Termo" ></Column>
+        <Column field="emolumentos" header="Emolumentos" ></Column>
+        <Column field="lei3217" header="Lei 3217" ></Column>
+        <Column field="lei4664" header="Lei 4664" ></Column>
+        <Column field="lei111" header="Lei 111"  ></Column>
+        <Column field="funarpen" header="Funarpen"  ></Column>
+        <Column field="mutua" header="Mutua"  ></Column>
+        <Column field="acoterj" header="Acoterj"  ></Column>
+        <Column field="issqn" header="ISSQN"  ></Column>
+        <Column field="fiscalização" header="Fiscalização"  ></Column>
       </DataTable>
 
       {/* Text Formating */}
@@ -184,15 +194,15 @@ function Homepage() {
 
         <div>
           <label htmlFor="matricula">Matrícula:</label>
-          <input type="text" id="matricula" onChange={(e) => setMatricula(e.target.value)} value={matricula} />
+          <InputText id="matricula" onChange={(e) => setMatricula(e.target.value)} value={matricula} />
         </div>
 
         <div>
           <label htmlFor="corpo">Corpo:</label>
-          <textarea id="corpo" onChange={(e) => setCorpo(e.target.value)} value={corpo}></textarea>
+          <InputTextarea id="corpo" onChange={(e) => setCorpo(e.target.value)} value={corpo} />
         </div>
 
-        <button onClick={() => formatText()}>Formatar</button>
+        <Button onClick={() => formatText()}>Formatar</Button>
       </div>
     </div>
   );
