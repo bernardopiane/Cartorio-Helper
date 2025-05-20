@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "cartorio_helper_tauri",
+  "productName": "Cartório Helper",
   "version": "0.1.0",
-  "identifier": "com.bernardopiane.cartorio_helper",
+  "identifier": "com.bernardopiane.cartorio-helper",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "cartorio_helper_tauri",
+        "title": "Cartório Helper",
         "width": 800,
         "height": 600
       }
