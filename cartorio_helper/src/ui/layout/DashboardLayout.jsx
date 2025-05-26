@@ -1,29 +1,28 @@
 import React from 'react';
-import { TabView, TabPanel } from 'primereact/tabview';
-import FileUploadTable from '../components/FileUploadTable';
-import TextFormatter from '../components/TextFormatter';
-import ConsultaCRM from '../components/ConsultaCRM';
 import styles from './DashboardLayout.module.css';
+import PageSelector from '../components/PageSelector';
+import { Outlet } from 'react-router-dom';
 
 function DashboardLayout() {
   return (
     <div className={styles.dashboardContainer}>
-      <div className={styles.dashboardHeader}>
-        <h1>Cartório Helper Dashboard</h1>
-      </div>
-      <div className={styles.dashboardContent}>
-        <TabView>
-          <TabPanel header="Upload de Arquivos">
-            <FileUploadTable />
-          </TabPanel>
-          <TabPanel header="Formatador de Texto">
-            <TextFormatter />
-          </TabPanel>
-          <TabPanel header="Consulta CRM">
-            <ConsultaCRM />
-          </TabPanel>
-        </TabView>
-      </div>
+      <header className={styles.dashboardHeader}>
+        <h1>Cartório Helper</h1>
+        <p className={styles.subtitle}>Ferramentas para cartórios</p>
+      </header>
+
+      <main className={styles.dashboardContent}>
+        <nav className={styles.pageSelector}>
+          <PageSelector />
+        </nav>
+        <section className={styles.pageContent}>
+          <Outlet />
+        </section>
+      </main>
+
+      <footer className={styles.dashboardFooter}>
+        <p>© 2025 Cartório Helper</p>
+      </footer>
     </div>
   );
 }

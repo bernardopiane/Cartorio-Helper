@@ -1,7 +1,7 @@
 {
   "name": "cartorio_helper",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.5",
   "type": "module",
   "main": "electron.js",
   "scripts": {
@@ -23,6 +23,7 @@
     "primereact": "^10.9.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.1",
     "tailwindcss": "^4.1.7"
   },
   "devDependencies": {
