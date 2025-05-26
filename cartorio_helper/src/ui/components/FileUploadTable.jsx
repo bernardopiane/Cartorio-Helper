@@ -7,6 +7,10 @@ function FileUploadTable() {
   const [file, setFile] = React.useState(null);
   const [tableData, setTableData] = React.useState([]);
 
+  function addTableData(data) {
+    setTableData((prevData) => [...prevData, ...data]);
+  }
+
   function handleFileChange(e) {
     if (!e.target.files[0]) return;
     setFile(e.target.files[0]);
@@ -54,7 +58,7 @@ function FileUploadTable() {
         .map(child => getRecordData(child, isRCPN));
 
       console.log("Processed records:", dataArray.length);
-      setTableData(dataArray);
+      addTableData(dataArray);
     } catch (error) {
       console.error("Error processing file:", error);
     }
