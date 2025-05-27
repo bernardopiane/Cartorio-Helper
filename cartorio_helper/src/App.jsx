@@ -6,8 +6,8 @@ import AppRouter from './routes';
 
 export default function App() {
   return (
-      <PrimeReactProvider>
-          <AppRouter />
-      </PrimeReactProvider>
+    <PrimeReactProvider>
+      <AppRouter />
+    </PrimeReactProvider>
   );
 }
