@@ -54,7 +54,7 @@ function FileUploadTable() {
       }
 
       const dataArray = Array.from(remessa.children)
-        .filter(child => child.hasAttribute('Selo'))
+        .filter(child => child.hasAttribute('Selo') || child.hasAttribute('CCT'))
         .map(child => getRecordData(child, isRCPN));
 
       console.log("Processed records:", dataArray.length);
