@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import NavigationLayout from '../ui/layout/NavigationLayout';
 import FileUploadTable from '../ui/components/FileUploadTable';
 import TextFormatter from '../ui/components/TextFormatter';
@@ -17,7 +17,7 @@ const AppRouter = () => {
           <Route path="consulta" element={<ConsultaCRM />} />
         </Route>
       </Routes>
-      
+
     </Router>
   );
 };
