@@ -122,6 +122,10 @@ function FileUploadTable() {
         return "3007";
       case 'CertidaoGenerica':
         return "8020";
+      case 'AverbacaoCasamento':
+      case 'AverbacaoNascimento':
+      case 'AverbacaoObito':
+        return "3012";
       default:
         return '';
     }

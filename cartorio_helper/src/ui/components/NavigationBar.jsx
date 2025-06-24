@@ -13,6 +13,7 @@ function NavigationBar() {
                 <Link to="/" className="text-link">Dashboard</Link>
                 <Link to="/upload" className="text-link">Upload de Arquivos</Link>
                 <Link to="/formatter" className="text-link">Formatador de Texto</Link>
+                <Link to="/etiquetas" className="text-link">Etiquetas</Link>
                 <Link to="/consulta" className="text-link">Consulta CRM</Link>
             </div>
         </nav>
