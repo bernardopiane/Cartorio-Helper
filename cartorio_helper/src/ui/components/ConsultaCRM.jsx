@@ -1,18 +1,19 @@
 import React from 'react';
+import { Card } from 'primereact/card';
+import styles from './ConsultaCRM.module.css';
 
 function ConsultaCRM() {
     return (
-        <div id="consulta-crm" className="p-4 mt-4 border rounded">
-            <h2 className="mb-3">Consulta CRM</h2>
-            <div className="iframe-container" style={{ height: '600px', width: '100%' }}>
-                <iframe
-                    src="https://portal.cremerj.org.br/busca-medicos"
-                    title="Consulta CRM"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 'none' }}
-                />
-            </div>
+        <div className={styles.consultaCRMContainer}>
+            <Card title="Consulta CRM">
+                <div className={styles.iframeContainer}>
+                    <iframe
+                        src="https://portal.cremerj.org.br/busca-medicos"
+                        title="Consulta CRM"
+                        className={styles.iframe}
+                    />
+                </div>
+            </Card>
         </div>
     );
 }
