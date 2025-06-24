@@ -151,8 +151,8 @@ function FileUploadTable() {
         <Button label="Carregar" onClick={() => loadData(file)} style={{ marginLeft: '1rem' }} />
         <Button label="Limpar" onClick={clearData} style={{ marginLeft: '1rem' }} />
       </div>
-      <DataTable value={tableData}>
-        <Column field="selo" header="Selo" sortable />
+      <DataTable value={tableData} sortField="selo" sortOrder={1} responsiveLayout="scroll">
+        <Column field="selo" header="Selo" sortable  />
         <Column field="codigo" header="Código" />
         <Column field="rcpn" header="RCPN" />
         <Column field="rit" header="RIT" />
