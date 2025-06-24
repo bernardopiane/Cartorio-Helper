@@ -1,68 +1,65 @@
 import React from 'react';
 import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
+import { InputText } from 'primereact/inputtext';
+import { Card } from 'primereact/card';
+import styles from './TextFormatter.module.css';
 
 function TextFormatter() {
   const [corpo, setCorpo] = React.useState('');
   const [matricula, setMatricula] = React.useState('');
 
-  function formatText() {
-    console.log("Formatando texto");
-    let corpoValue = document.getElementById('corpo').value;
-    let matriculaValue = document.getElementById('matricula').value;
+  const formatText = () => {
+    // Remove all break lines
+    const formattedCorpo = corpo.replace(/\n/g, '');
+    const formattedMatricula = matricula.replace(/\n/g, '');
 
-    // Removes all break lines
-    corpoValue = corpoValue.replace(/\n/g, '');
-    matriculaValue = matriculaValue.replace(/\n/g, '');
+    // Replace double quotes with single quotes
+    const finalCorpo = formattedCorpo.replace(/"/g, "'");
+    const finalMatricula = formattedMatricula.replace(/"/g, "'");
 
-    // Replaces double quotes with single quotes
-    corpoValue = corpoValue.replace(/"/g, "'");
-    matriculaValue = matriculaValue.replace(/"/g, "'");
+    // Remove all dots from matricula
+    const cleanMatricula = finalMatricula.replace(/\./g, '');
+    // Remove all - from matricula
+    const cleanMatricula2 = cleanMatricula.replace(/-/g, '');
 
-    // Remove all dots
-    matriculaValue = matriculaValue.replace(/\./g, '');
-
-    // Updates the input fields
-    setCorpo(corpoValue);
-    console.log(corpoValue);
-    setMatricula(matriculaValue);
-    console.log(matriculaValue);
-  }
+    // Update state
+    setCorpo(finalCorpo);
+    setMatricula(cleanMatricula2);
+  };
 
   return (
-    <div id="text-formatting" className="p-4 mt-4 border rounded">
-      <h2 className="mb-3">Formatação de Texto</h2>
-
-      <div className="field mb-3">
-        <label htmlFor="matricula" className="block mb-2">Matrícula:</label>
-        <InputText
-          id="matricula"
-          onChange={(e) => setMatricula(e.target.value)}
-          value={matricula}
-          className="w-full"
-          placeholder="Digite a matrícula aqui"
+    <div className={styles.textFormatterContainer}>
+      <Card title="Formatador de Texto">
+        <div className={styles.inputsContainer}>
+          <div className={styles.inputGroup}>
+            <label htmlFor="matricula">Matrícula:</label>
+            <InputText 
+              id="matricula" 
+              value={matricula} 
+              onChange={(e) => setMatricula(e.target.value)} 
+              placeholder="Digite a matrícula aqui..."
+              className={styles.templateField}
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label htmlFor="corpo">Texto:</label>
+            <InputTextarea 
+              id="corpo" 
+              value={corpo} 
+              onChange={(e) => setCorpo(e.target.value)} 
+              placeholder="Digite o texto aqui..." 
+              rows="5" 
+              className={styles.templateField}
+            />
+          </div>
+        </div>
+        <Button 
+          label="Formatar" 
+          onClick={formatText}
+          className={styles.formatButton}
         />
-      </div>
-
-      <div className="field mb-3">
-        <label htmlFor="corpo" className="block mb-2">Corpo:</label>
-        <InputTextarea
-          id="corpo"
-          onChange={(e) => setCorpo(e.target.value)}
-          value={corpo}
-          className="w-full"
-          rows={5}
-          placeholder="Digite o texto a ser formatado"
-        />
-      </div>
-
-      <Button
-        onClick={() => formatText()}
-        className="mt-2"
-        icon="pi pi-check"
-        label="Formatar Texto"
-      />
+      </Card>
     </div>
   );
 }
