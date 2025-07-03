@@ -11,12 +11,16 @@ function TextFormatter() {
 
   const formatText = () => {
     // Remove all break lines
-    const formattedCorpo = corpo.replace(/\n/g, '');
+    const formattedCorpo = corpo.replace(/\n/g, ' ');
     const formattedMatricula = matricula.replace(/\n/g, '');
 
+    // Remove double spaces
+    const formattedCorpo2 = formattedCorpo.replace(/\s\s/g, ' ');
+    const formattedMatricula2 = formattedMatricula.replace(/\s\s/g, '');
+
     // Replace double quotes with single quotes
-    const finalCorpo = formattedCorpo.replace(/"/g, "'");
-    const finalMatricula = formattedMatricula.replace(/"/g, "'");
+    const finalCorpo = formattedCorpo2.replace(/"/g, "'");
+    const finalMatricula = formattedMatricula2.replace(/"/g, "'");
 
     // Remove all dots from matricula
     const cleanMatricula = finalMatricula.replace(/\./g, '');
