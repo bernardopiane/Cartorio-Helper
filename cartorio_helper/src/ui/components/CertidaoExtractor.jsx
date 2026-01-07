@@ -21,6 +21,8 @@ const loadPdfJs = () => {
   });
 };
 
+// TODO Adicionar suporte pra certidão de casamento / 2 pessoas por certidão
+
 export default function CertidaoExtractor() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
