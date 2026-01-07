@@ -15,6 +15,7 @@ function NavigationBar() {
                 <Link to="/formatter" className="text-link">Formatador de Texto</Link>
                 <Link to="/etiquetas" className="text-link">Etiquetas</Link>
                 <Link to="/consulta" className="text-link">Consulta CRM</Link>
+                <Link to="/certidao" className="text-link">Certidão</Link>
             </div>
         </nav>
     );

@@ -5,6 +5,7 @@ import TextFormatter from '../ui/components/TextFormatter';
 import ConsultaCRM from '../ui/components/ConsultaCRM';
 import Dashboard from '../ui/components/Dashboard';
 import Etiquetas from '../ui/components/Etiquetas';
+import CertidaoExtractor from '../ui/components/CertidaoExtractor';
 
 const AppRouter = () => {
   return (
@@ -17,6 +18,7 @@ const AppRouter = () => {
           <Route path="formatter" element={<TextFormatter />} />
           <Route path="consulta" element={<ConsultaCRM />} />
           <Route path="etiquetas" element={<Etiquetas />} />
+          <Route path="certidao" element={<CertidaoExtractor />} />
         </Route>
       </Routes>
 
