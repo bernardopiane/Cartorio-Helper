@@ -29,17 +29,17 @@ function Etiquetas() {
     const generateTemplate = () => {
         let template = 'AVERBAÇÃO: Livro ' + livro + ', Folha ' + folha + ', Termo ' + termos + '.';
         if (naoAverbacao) {
-            template += `\nNão foi possível averbar o CPF do(a) registrado(a), pois ${motivo}`;
+            template += `\n\nNão foi possível averbar o CPF do(a) registrado(a), pois ${motivo}`;
             return template;
         } else {
-            template += `\nAverbo, nos termos do Art. 6º do Provimento 63 de 14/11/2017 do Conselho Nacional de Justiça, para que passe a constar do registro, que o número do CPF de ${nome1} é ${cpf1}`;
+            template += `\n\nAverbo, nos termos do Art. 6º do Provimento 63 de 14/11/2017 do Conselho Nacional de Justiça, para que passe a constar do registro, que o número do CPF de ${nome1} é ${cpf1}`;
 
             if (cpf2 && nome2) {
                 template += ` e que o número do CPF de ${nome2} é ${cpf2}`;
             }
 
             template += `, tudo conforme comprovantes da Receita Federal, obtido através de consulta feita na base dados do CRC Nacional. Dou fé, Nova Friburgo, ${data}.`;
-            template += `\nIsento - Processo nº ${processo}`;
+            template += `\n\nIsento - Processo nº ${processo}`;
             template += `\nSelo Eletrônico: ${selo}`;
             return template;
         }
