@@ -12,6 +12,14 @@ function Etiquetas() {
     const [nome1, setNome1] = React.useState('');
     const [cpf2, setCpf2] = React.useState('');
     const [nome2, setNome2] = React.useState('');
+
+    const [processo, setProcesso] = React.useState('');
+    const [selo, setSelo] = React.useState('');
+
+    const [livro, setLivro] = React.useState('');
+    const [folha, setFolha] = React.useState('');
+    const [termos, setTermos] = React.useState('');
+
     const [motivo, setMotivo] = React.useState('');
     const [naoAverbacao, setNaoAverbacao] = React.useState(false);
     // Data atual no formato dd de mês de yyyy
@@ -19,17 +27,20 @@ function Etiquetas() {
 
     // Função para gerar o template com os valores atuais
     const generateTemplate = () => {
+        let template = 'AVERBAÇÃO: Livro ' + livro + ', Folha ' + folha + ', Termo ' + termos + '.';
         if (naoAverbacao) {
-            let template = `Não foi possível averbar o CPF do(a) registrado(a), pois ${motivo}`;
+            template += `\nNão foi possível averbar o CPF do(a) registrado(a), pois ${motivo}`;
             return template;
         } else {
-            let template = `Averbo, nos termos do Art. 6º do Provimento 63 de 14/11/2017 do Conselho Nacional de Justiça, para que passe a constar do registro, que o número do CPF de ${nome1} é ${cpf1}`;
+            template += `\nAverbo, nos termos do Art. 6º do Provimento 63 de 14/11/2017 do Conselho Nacional de Justiça, para que passe a constar do registro, que o número do CPF de ${nome1} é ${cpf1}`;
 
             if (cpf2 && nome2) {
                 template += ` e que o número do CPF de ${nome2} é ${cpf2}`;
             }
 
             template += `, tudo conforme comprovantes da Receita Federal, obtido através de consulta feita na base dados do CRC Nacional. Dou fé, Nova Friburgo, ${data}.`;
+            template += `\nIsento - Processo nº ${processo}`;
+            template += `\nSelo Eletrônico: ${selo}`;
             return template;
         }
     };
@@ -38,11 +49,82 @@ function Etiquetas() {
 
     React.useEffect(() => {
         setInputText(generateTemplate());
-    }, [nome1, cpf1, nome2, cpf2, data, motivo, naoAverbacao]);
+    }, [nome1, cpf1, nome2, cpf2, data, motivo, naoAverbacao, livro, folha, termos, processo, selo]);
 
     return (
         <div className={styles.etiquetasContainer}>
             <Card title="Gerador de Etiquetas">
+                <div className={styles.inputsContainer}>
+                    <div className={styles.inputGroup}>
+                        <label htmlFor="processo">Processo:</label>
+                        <InputText
+                            type="text"
+                            id="processo"
+                            value={processo}
+                            onChange={(e) => {
+                                setProcesso(e.target.value);
+                            }}
+                            placeholder="Número do processo"
+                            className={styles.inputField}
+                        />
+                    </div>
+                    <div className={styles.inputGroup}>
+                        <label htmlFor="selo">Selo Eletrônico:</label>
+                        <InputText
+                            type="text"
+                            id="selo"
+                            value={selo}
+                            onChange={(e) => {
+                                setSelo(e.target.value);
+                            }}
+                            placeholder="Número do selo"
+                            className={styles.inputField}
+                        />
+                    </div>
+                </div>
+
+                <div className={styles.inputsContainer}>
+                    <div className={styles.inputGroup}>
+                        <label htmlFor="livro">Livro:</label>
+                        <InputText
+                            type="text"
+                            id="livro"
+                            value={livro}
+                            onChange={(e) => {
+                                setLivro(e.target.value);
+                            }}
+                            placeholder="Número do livro"
+                            className={styles.inputField}
+                        />
+                    </div>
+                    <div className={styles.inputGroup}>
+                        <label htmlFor="folha">Folha:</label>
+                        <InputText
+                            type="text"
+                            id="folha"
+                            value={folha}
+                            onChange={(e) => {
+                                setFolha(e.target.value);
+                            }}
+                            placeholder="Número da folha"
+                            className={styles.inputField}
+                        />
+                    </div>
+                    <div className={styles.inputGroup}>
+                        <label htmlFor="termos">Termo:</label>
+                        <InputText
+                            type="text"
+                            id="termos"
+                            value={termos}
+                            onChange={(e) => {
+                                setTermos(e.target.value);
+                            }}
+                            placeholder="Número do termo"
+                            className={styles.inputField}
+                        />
+                    </div>
+                </div>
+
                 <div className={styles.inputsContainer}>
                     <div className={styles.inputGroup}>
                         <label htmlFor="cpf1">CPF 1:</label>
