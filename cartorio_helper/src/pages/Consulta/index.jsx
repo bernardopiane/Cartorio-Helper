@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from 'primereact/card';
-import styles from './ConsultaCRM.module.css';
+import styles from './styles.module.css';
 
 function ConsultaCRM() {
     return (

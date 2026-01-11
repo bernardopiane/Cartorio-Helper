@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './DashboardLayout.module.css';
-import PageSelector from '../components/PageSelector';
+import styles from './styles.module.css';
+import PageSelector from '../../components/PageSelector';
 import { Outlet } from 'react-router-dom';
 
 function DashboardLayout() {

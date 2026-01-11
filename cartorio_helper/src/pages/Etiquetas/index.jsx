@@ -4,7 +4,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { Checkbox } from 'primereact/checkbox';
 import { Card } from 'primereact/card';
 import React from 'react';
-import styles from './Etiquetas.module.css';
+import styles from './styles.module.css';
 
 
 function Etiquetas() {

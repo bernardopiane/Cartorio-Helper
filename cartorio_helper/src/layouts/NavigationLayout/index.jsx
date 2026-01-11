@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import NavigationBar from "../components/NavigationBar";
-import styles from "./NavigationLayout.module.css";
+import NavigationBar from "../../components/NavigationBar";
+import styles from "./styles.module.css";
 
 function NavigationLayout() {
     return (

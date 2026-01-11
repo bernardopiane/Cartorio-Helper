@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'primereact/button';
-import styles from './NavigationBar.module.css';
+import styles from './styles.module.css';
 
 function NavigationBar() {
     return (

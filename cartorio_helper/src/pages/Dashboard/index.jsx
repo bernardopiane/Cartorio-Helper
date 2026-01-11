@@ -1,4 +1,4 @@
-import RcpnNews from "./RcpnNews";
+import RcpnNews from "../News";
 
 function Dashboard() {
     return (

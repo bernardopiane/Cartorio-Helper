@@ -1,11 +1,11 @@
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import NavigationLayout from '../ui/layout/NavigationLayout';
-import FileUploadTable from '../ui/components/FileUploadTable';
-import TextFormatter from '../ui/components/TextFormatter';
-import ConsultaCRM from '../ui/components/ConsultaCRM';
-import Dashboard from '../ui/components/Dashboard';
-import Etiquetas from '../ui/components/Etiquetas';
-import CertidaoExtractor from '../ui/components/CertidaoExtractor';
+import NavigationLayout from '../layouts/NavigationLayout';
+import FileUploadTable from '../pages/Upload';
+import TextFormatter from '../pages/Formatter';
+import ConsultaCRM from '../pages/Consulta';
+import Dashboard from '../pages/Dashboard';
+import Etiquetas from '../pages/Etiquetas';
+import CertidaoExtractor from '../pages/Certidao';
 
 const AppRouter = () => {
   return (
