@@ -1,422 +1,7 @@
-// import React, { useState } from 'react';
-// import { FileText, Upload, Download, AlertCircle, CheckCircle, Copy, Check } from 'lucide-react';
-
-// // Nota: Este componente usa pdf.js via CDN
-// const loadPdfJs = () => {
-//   return new Promise((resolve, reject) => {
-//     if (window.pdfjsLib) {
-//       resolve(window.pdfjsLib);
-//       return;
-//     }
-
-//     const script = document.createElement('script');
-//     script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-//     script.onload = () => {
-//       window.pdfjsLib.GlobalWorkerOptions.workerSrc = 
-//         'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-//       resolve(window.pdfjsLib);
-//     };
-//     script.onerror = reject;
-//     document.head.appendChild(script);
-//   });
-// };
-
-// // TODO Adicionar suporte pra certidão de casamento / 2 pessoas por certidão
-
-// export default function CertidaoExtractor() {
-//   const [file, setFile] = useState(null);
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState(null);
-//   const [extractedData, setExtractedData] = useState(null);
-//   const [copiedField, setCopiedField] = useState(null);
-
-//   const copyToClipboard = async (text, fieldName) => {
-//     try {
-//       await navigator.clipboard.writeText(text);
-//       setCopiedField(fieldName);
-//       setTimeout(() => setCopiedField(null), 2000);
-//     } catch (err) {
-//       console.error('Erro ao copiar:', err);
-//     }
-//   };
-
-//   const extractInfoFromText = (text) => {
-//     const data = {
-//       nome: '',
-//       sexo: '',
-//       cns: '',
-//       selo: '',
-//       matricula: '',
-//       dataRegistro: '',
-//       dataEvento: ''
-//     };
-
-//     // Nome - procura após "Nome" e antes de "Número do CPF" ou "Matrícula"
-//     const nomeMatch = text.match(/Nome\s+([\s\S]+?)(?:Número do CPF|Matrícula)/i);
-//     if (nomeMatch) {
-//       data.nome = nomeMatch[1].trim().replace(/\s+/g, ' ');
-//     }
-
-//     // Sexo
-//     const sexoMatch = text.match(/Sexo\s+(feminino|masculino)/i);
-//     if (sexoMatch) {
-//       data.sexo = sexoMatch[1].trim();
-//     }
-
-//     // CNS
-//     const cnsMatch = text.match(/CNS\s*N[ºo°]?\s*(\d+)/i);
-//     if (cnsMatch) {
-//       data.cns = cnsMatch[1].trim();
-//     }
-
-//     // Selo Digital (último selo mencionado)
-//     const seloMatches = text.match(/Selo [Dd]igital:\s*([A-Za-z0-9]+)/g);
-//     if (seloMatches && seloMatches.length > 0) {
-//       const ultimoSelo = seloMatches[seloMatches.length - 1];
-//       const seloMatch = ultimoSelo.match(/Selo [Dd]igital:\s*([A-Za-z0-9]+)/);
-//       if (seloMatch) {
-//         data.selo = seloMatch[1].trim();
-//       }
-//     }
-
-//     // Matrícula
-//     const matriculaMatch = text.match(/Matrícula\s+([\d\s]+)/);
-//     if (matriculaMatch) {
-//       data.matricula = matriculaMatch[1].trim().replace(/\s+/g, ' ');
-//     }
-
-//     // Data de registro - procura o texto por extenso
-//     const dataRegistroMatch = text.match(/Data de registro\s+([\s\S]+?)(?:DNV|Dia)/i);
-//     if (dataRegistroMatch) {
-//       const dataTexto = dataRegistroMatch[1].trim();
-//       // Tenta converter para formato DD/MM/YYYY
-//       const dataConvertida = converterDataExtenso(dataTexto);
-//       data.dataRegistro = dataConvertida || dataTexto;
-//     }
-
-//     // Data do evento (nascimento) - procura por "Data de nascimento"
-//     const dataEventoMatch = text.match(/Data de nascimento\s+([\s\S]+?)(?:Dia)/i);
-//     if (dataEventoMatch) {
-//       const dataTexto = dataEventoMatch[1].trim();
-//       const dataConvertida = converterDataExtenso(dataTexto);
-//       data.dataEvento = dataConvertida || dataTexto;
-//     }
-
-//     // Também tenta pegar as datas nos campos Dia/Mês/Ano
-//     const diaMatch = text.match(/Dia\s+(\d{2})/);
-//     const mesMatch = text.match(/Mês\s+(\d{2})/);
-//     const anoMatch = text.match(/Ano\s+(\d{4})/);
-
-//     if (diaMatch && mesMatch && anoMatch && !data.dataEvento) {
-//       data.dataEvento = `${diaMatch[1]}/${mesMatch[1]}/${anoMatch[1]}`;
-//     }
-
-//     return data;
-//   };
-
-//   const converterDataExtenso = (dataTexto) => {
-//     const meses = {
-//       'janeiro': '01', 'fevereiro': '02', 'março': '03', 'abril': '04',
-//       'maio': '05', 'junho': '06', 'julho': '07', 'agosto': '08',
-//       'setembro': '09', 'outubro': '10', 'novembro': '11', 'dezembro': '12'
-//     };
-
-//     // Padrão: "nove de agosto de um mil e novecentos e cinquenta e dois"
-//     const match = dataTexto.match(/(\w+)\s+de\s+(\w+)\s+de\s+(.*)/i);
-//     if (match) {
-//       const dia = converterNumeroExtenso(match[1]);
-//       const mes = meses[match[2].toLowerCase()];
-//       const ano = converterAnoExtenso(match[3]);
-
-//       if (dia && mes && ano) {
-//         return `${dia.padStart(2, '0')}/${mes}/${ano}`;
-//       }
-//     }
-
-//     return null;
-//   };
-
-//   const converterNumeroExtenso = (texto) => {
-//     const numeros = {
-//       'um': '1', 'dois': '2', 'três': '3', 'quatro': '4', 'cinco': '5',
-//       'seis': '6', 'sete': '7', 'oito': '8', 'nove': '9', 'dez': '10',
-//       'onze': '11', 'doze': '12', 'treze': '13', 'quatorze': '14', 'quinze': '15',
-//       'dezesseis': '16', 'dezessete': '17', 'dezoito': '18', 'dezenove': '19',
-//       'vinte': '20', 'trinta': '30', 'tinta': '30'
-//     };
-
-//     const textoLower = texto.toLowerCase().trim();
-
-//     // Número simples
-//     if (numeros[textoLower]) {
-//       return numeros[textoLower];
-//     }
-
-//     // Número composto (ex: vinte e um)
-//     const partes = textoLower.split(/\s+e\s+/);
-//     if (partes.length === 2 && numeros[partes[0]] && numeros[partes[1]]) {
-//       return String(parseInt(numeros[partes[0]]) + parseInt(numeros[partes[1]]));
-//     }
-
-//     return null;
-//   };
-
-//   const converterAnoExtenso = (texto) => {
-//     // Padrão: "um mil e novecentos e cinquenta e dois" = 1952
-//     const textoLower = texto.toLowerCase().trim();
-
-//     // Procura por "mil e" seguido do resto
-//     const match = textoLower.match(/mil\s+e\s+(.*)/);
-//     if (!match) return null;
-
-//     const centenas = {
-//       'novecentos': 900,
-//       'oitocentos': 800,
-//       'setecentos': 700,
-//       'seiscentos': 600
-//     };
-
-//     const resto = match[1].trim();
-//     let ano = 1000;
-
-//     // Procura pela centena
-//     for (const [palavra, valor] of Object.entries(centenas)) {
-//       if (resto.includes(palavra)) {
-//         ano += valor;
-
-//         // Pega tudo depois da centena
-//         const indexCentena = resto.indexOf(palavra);
-//         const depoisCentena = resto.substring(indexCentena + palavra.length).trim();
-
-//         // Remove "e" do início se existir
-//         const parteRestante = depoisCentena.replace(/^e\s+/, '').trim();
-
-//         if (parteRestante) {
-//           const dezenas = converterDezenas(parteRestante);
-//           if (dezenas) {
-//             ano += dezenas;
-//           }
-//         }
-//         break;
-//       }
-//     }
-
-//     return String(ano);
-//   };
-
-//   const converterDezenas = (texto) => {
-//     const numeros = {
-//       'noventa': 90, 'oitenta': 80, 'setenta': 70, 'sessenta': 60, 'cinquenta': 50,
-//       'quarenta': 40, 'trinta': 30, 'vinte': 20, 'dez': 10,
-//       'dezenove': 19, 'dezoito': 18, 'dezessete': 17, 'dezesseis': 16,
-//       'quinze': 15, 'quatorze': 14, 'treze': 13, 'doze': 12, 'onze': 11,
-//       'nove': 9, 'oito': 8, 'sete': 7, 'seis': 6, 'cinco': 5,
-//       'quatro': 4, 'três': 3, 'dois': 2, 'um': 1, 'uma': 1
-//     };
-
-//     let total = 0;
-//     const textoLimpo = texto.toLowerCase().trim();
-
-//     // Remove todos os "e" e divide em palavras
-//     const palavras = textoLimpo.split(/\s+/);
-
-//     for (const palavra of palavras) {
-//       const palavraTrimmed = palavra.trim();
-//       // Ignora a palavra "e"
-//       if (palavraTrimmed === 'e') continue;
-
-//       if (numeros[palavraTrimmed]) {
-//         total += numeros[palavraTrimmed];
-//       }
-//     }
-
-//     return total > 0 ? total : null;
-//   };
-
-//   const handleFileSelect = async (event) => {
-//     const selectedFile = event.target.files[0];
-//     if (!selectedFile) return;
-
-//     if (selectedFile.type !== 'application/pdf') {
-//       setError('Por favor, selecione um arquivo PDF válido.');
-//       return;
-//     }
-
-//     setFile(selectedFile);
-//     setError(null);
-//     setExtractedData(null);
-//   };
-
-//   const extractPdfText = async (pdfData) => {
-//     const pdfjsLib = await loadPdfJs();
-//     const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
-//     let fullText = '';
-
-//     for (let i = 1; i <= pdf.numPages; i++) {
-//       const page = await pdf.getPage(i);
-//       const textContent = await page.getTextContent();
-//       const pageText = textContent.items.map(item => item.str).join(' ');
-//       fullText += pageText + '\n';
-//     }
-
-//     return fullText;
-//   };
-
-//   const processFile = async () => {
-//     if (!file) return;
-
-//     setLoading(true);
-//     setError(null);
-
-//     try {
-//       const arrayBuffer = await file.arrayBuffer();
-//       const uint8Array = new Uint8Array(arrayBuffer);
-
-//       const text = await extractPdfText(uint8Array);
-//       const data = extractInfoFromText(text);
-
-//       setExtractedData(data);
-//     } catch (err) {
-//       setError(`Erro ao processar PDF: ${err.message}`);
-//       console.error(err);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const exportToJson = () => {
-//     if (!extractedData) return;
-
-//     const dataStr = JSON.stringify(extractedData, null, 2);
-//     const dataBlob = new Blob([dataStr], { type: 'application/json' });
-//     const url = URL.createObjectURL(dataBlob);
-//     const link = document.createElement('a');
-//     link.href = url;
-//     link.download = 'certidao_extraida.json';
-//     link.click();
-//     URL.revokeObjectURL(url);
-//   };
-
-//   const DataField = ({ label, value, fieldName }) => (
-//     <div className="p-4 bg-gray-50 rounded-lg">
-//       <div className="flex items-center justify-between mb-1">
-//         <label className="text-sm font-semibold text-gray-600 uppercase tracking-wide">{label}</label>
-//         <button
-//           onClick={() => copyToClipboard(value || '', fieldName)}
-//           className="p-1.5 hover:bg-gray-200 rounded transition-colors"
-//           title="Copiar"
-//           disabled={!value}
-//         >
-//           {copiedField === fieldName ? (
-//             <Check className="w-4 h-4 text-green-600" />
-//           ) : (
-//             <Copy className="w-4 h-4 text-gray-500" />
-//           )}
-//         </button>
-//       </div>
-//       <p className="text-lg text-gray-900">{value || 'Não encontrado'}</p>
-//     </div>
-//   );
-
-//   return (
-//     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
-//       <div className="max-w-4xl mx-auto">
-//         <div className="bg-white rounded-xl shadow-lg p-8">
-//           <div className="flex items-center gap-3 mb-6">
-//             <FileText className="w-8 h-8 text-indigo-600" />
-//             <h1 className="text-3xl font-bold text-gray-800">
-//               Extrator de Certidão de Nascimento
-//             </h1>
-//           </div>
-
-//           <div className="mb-8">
-//             <label className="block mb-2 text-sm font-medium text-gray-700">
-//               Selecione o arquivo PDF
-//             </label>
-//             <div className="flex items-center gap-4">
-//               <label className="flex-1 flex items-center justify-center px-6 py-4 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-indigo-500 transition-colors">
-//                 <Upload className="w-5 h-5 mr-2 text-gray-400" />
-//                 <span className="text-gray-600">
-//                   {file ? file.name : 'Clique para selecionar um PDF'}
-//                 </span>
-//                 <input
-//                   type="file"
-//                   accept="application/pdf"
-//                   onChange={handleFileSelect}
-//                   className="hidden"
-//                 />
-//               </label>
-
-//               <button
-//                 onClick={processFile}
-//                 disabled={!file || loading}
-//                 className="px-6 py-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors font-medium"
-//               >
-//                 {loading ? 'Processando...' : 'Extrair Dados'}
-//               </button>
-//             </div>
-//           </div>
-
-//           {error && (
-//             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
-//               <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-//               <p className="text-red-800">{error}</p>
-//             </div>
-//           )}
-
-//           {extractedData && (
-//             <div className="space-y-6">
-//               <div className="flex items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-lg">
-//                 <CheckCircle className="w-5 h-5 text-green-600" />
-//                 <p className="text-green-800 font-medium">Dados extraídos com sucesso!</p>
-//               </div>
-
-//               <div className="grid gap-4">
-//                 <DataField label="Nome" value={extractedData.nome} fieldName="nome" />
-
-//                 <div className="grid grid-cols-2 gap-4">
-//                   <DataField label="Sexo" value={extractedData.sexo} fieldName="sexo" />
-//                   <DataField label="CNS" value={extractedData.cns} fieldName="cns" />
-//                 </div>
-
-//                 <DataField label="Matrícula" value={extractedData.matricula} fieldName="matricula" />
-
-//                 <div className="grid grid-cols-2 gap-4">
-//                   <DataField label="Data do Evento" value={extractedData.dataEvento} fieldName="dataEvento" />
-//                   <DataField label="Data do Registro" value={extractedData.dataRegistro} fieldName="dataRegistro" />
-//                 </div>
-
-//                 <DataField label="Selo Digital" value={extractedData.selo} fieldName="selo" />
-//               </div>
-
-//               <button
-//                 onClick={exportToJson}
-//                 className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
-//               >
-//                 <Download className="w-5 h-5" />
-//                 Exportar para JSON
-//               </button>
-//             </div>
-//           )}
-//         </div>
-
-//         <div className="mt-6 p-4 bg-white rounded-lg shadow">
-//           <h2 className="text-sm font-semibold text-gray-700 mb-2">Informações:</h2>
-//           <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
-//             <li>Este extrator foi desenvolvido para certidões de nascimento brasileiras</li>
-//             <li>Suporta apenas arquivos em formato PDF</li>
-//             <li>Os dados são processados localmente no seu navegador</li>
-//             <li>Você pode exportar os resultados em formato JSON</li>
-//           </ul>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
 import { useState, useRef, useCallback } from "react";
+import { Button, Typography, Chip } from '@mui/material';
+import { FileBadge, Upload, RotateCcw, FileText } from 'lucide-react';
 
-// ── PDF.js loader ─────────────────────────────────────────────────────────────
 async function loadPdfJs() {
   if (window._pdfjsLib) return window._pdfjsLib;
   await new Promise((res, rej) => {
@@ -443,7 +28,6 @@ async function extractTextFromPDF(file) {
   return text;
 }
 
-// ── Date parsing helpers ──────────────────────────────────────────────────────
 const MESES_NUM = {
   janeiro: "01", fevereiro: "02", março: "03", marco: "03",
   abril: "04", maio: "05", junho: "06", julho: "07",
@@ -467,7 +51,7 @@ const CENTENAS = {
 
 function writtenToNumber(str) {
   if (!str) return NaN;
-  const words = str.toLowerCase().replace(/[,\-]/g, " ").trim().split(/\s+/).filter(w => w && w !== "e");
+  const words = str.toLowerCase().replace(/[, -]/g, " ").trim().split(/\s+/).filter(w => w && w !== "e");
   let total = 0, cur = 0;
   for (const w of words) {
     if (w === "mil") { cur = cur || 1; total += cur * 1000; cur = 0; }
@@ -479,7 +63,7 @@ function writtenToNumber(str) {
 
 function parseDate(raw) {
   if (!raw) return null;
-  const num = raw.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+  const num = raw.match(/(\d{1,2})[/-](\d{1,2})[/-](\d{4})/);
   if (num) return `${num[1].padStart(2, "0")}/${num[2].padStart(2, "0")}/${num[3]}`;
   const mixed = raw.toLowerCase().match(
     /(\d{1,2})\s+de\s+(janeiro|fevereiro|mar[çc]o|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\s+de\s+(\d{4})/
@@ -498,7 +82,6 @@ function parseDate(raw) {
   return raw.replace(/\s+/g, " ").trim();
 }
 
-// Extract a date using nearby Dia/Mês/Ano numeric fields
 function dateFromDMA(chunk) {
   const d = chunk.match(/Dia\s+(\d{1,2})/i);
   const m = chunk.match(/M[eê]s\s+(\d{1,2})/i);
@@ -514,7 +97,6 @@ function extractDateFromLabel(text, labelPattern) {
   return m ? dateFromDMA(m[1]) : null;
 }
 
-// Clean a captured string
 function clean(s) { return s ? s.replace(/\s+/g, " ").trim() : null; }
 
 function parseField(text, ...patterns) {
@@ -525,7 +107,6 @@ function parseField(text, ...patterns) {
   return null;
 }
 
-// ── Field extraction — Nascimento ─────────────────────────────────────────────
 function extractNascimento(t) {
   const nome = parseField(t,
     /Nome\s+([A-ZÁÉÍÓÚÂÊÔÃÕÇÀÜ][A-ZÁÉÍÓÚÂÊÔÃÕÇÀÜ\s]+?)(?:\s+N[uú]mero do CPF|\s+Matr[ií]cula|\s+CPF)/i,
@@ -545,7 +126,6 @@ function extractNascimento(t) {
   return { nome, nomeAtual, sexo, dataEvento, dataRegistro };
 }
 
-// ── Field extraction — Óbito ─────────────────────────────────────────────────────
 function extractObito(t) {
   const nome = parseField(t,
     /Nome\s+([A-ZÁÉÍÓÚÂÊÔÃÕÇÀÜ][A-ZÁÉÍÓÚÂÊÔÃÕÇÀÜa-záéíóúâêôãõçàü\s]+?)(?:\s+N[uú]mero do CPF|\s+Matr[ií]cula|\s+CPF)/i,
@@ -563,15 +143,12 @@ function extractObito(t) {
   return { nome, nomeAtual, sexo, dataEvento, dataRegistro };
 }
 
-// ── Field extraction — Casamento ──────────────────────────────────────────────
 function extractCasamento(t) {
-  // Split at "2º Cônjuge" to isolate each spouse section
   const split = t.split(/2[°º]\s*C[oô]njuge/i);
   const part1 = split[0];
   const part2 = split[1] || "";
 
-  function spouseName(chunk, label) {
-    // "Nome no momento da habilitação" followed by the name
+  function spouseName(chunk) {
     const m = chunk.match(/Nome no momento da habilita[cç][aã]o\s+([A-ZÁÉÍÓÚÂÊÔÃÕÇÀÜ][A-ZÁÉÍÓÚÂÊÔÃÕÇÀÜa-záéíóúâêôãõçàü\s]+?)(?:\s+Dia|\s+Nacionalidade|\s+Data)/i);
     return m ? clean(m[1]) : null;
   }
@@ -590,7 +167,6 @@ function extractCasamento(t) {
     return m ? clean(m[1]) : null;
   }
 
-  // Names from the header "NOME ATUAL DOS CÔNJUGES" table
   const nomeAtualLines = [...t.matchAll(/([A-ZÁÉÍÓÚÂÊÔÃÕÇÀÜ]{2}[A-ZÁÉÍÓÚÂÊÔÃÕÇÀÜ\s]+?)\s+N[ÃA]O CONSTA/gi)];
   const nomeAtual1 = nomeAtualLines[0] ? clean(nomeAtualLines[0][1]) : null;
   const nomeAtual2 = nomeAtualLines[1] ? clean(nomeAtualLines[1][1]) : null;
@@ -608,10 +184,7 @@ function extractCasamento(t) {
     estadoCivil: spouseEstadoCivil(part2),
   };
 
-  // Celebration date — label is long, grab the Dia/Mês/Ano after it
-  const celebLabel = "Data da celebra[cç][aã]o do casamento";
-  const dataCasamento = extractDateFromLabel(t, celebLabel);
-
+  const dataCasamento = extractDateFromLabel(t, "Data da celebra[cç][aã]o do casamento");
   const dataRegistro =
     extractDateFromLabel(t, "Data de registro do casamento") ||
     extractDateFromLabel(t, "Data de registro");
@@ -623,7 +196,6 @@ function extractCasamento(t) {
   return { conjuge1, conjuge2, dataCasamento, dataRegistro, regimeBens };
 }
 
-// ── Main extractor ────────────────────────────────────────────────────────────
 function extractFields(rawText) {
   const t = rawText.replace(/\n/g, " ");
 
@@ -644,10 +216,11 @@ function extractFields(rawText) {
 
   const matricula = parseField(t,
     /Matr[ií]cula\s+([\d\s]{10,60}?)(?:\s+\d[°º]|\s+Data|\s+Hora|\s+[A-Z]{2,})/i,
+
     /Matr[ií]cula\s+([\d\s]+)/i,
   );
 
-  const selosAll = [...t.matchAll(/Selo\s+[Dd]igital[:\s]+([A-Za-z0-9\-]+)/g)];
+  const selosAll = [...t.matchAll(/Selo\s+[Dd]igital[:\s]+([A-Za-z0-9-]+)/g)];
   const seloDigital = selosAll.length > 0 ? selosAll[selosAll.length - 1][1] : null;
 
   const codigoCNS = parseField(t,
@@ -671,33 +244,36 @@ function extractFields(rawText) {
   return { ...base, ...extractNascimento(t) };
 }
 
-// ── UI Components ─────────────────────────────────────────────────────────────
 const TIPO_STYLE = {
-  Nascimento: { bg: "#dbeafe", color: "#1e40af" },
-  Casamento: { bg: "#fef9c3", color: "#854d0e" },
-  Óbito: { bg: "#fee2e2", color: "#991b1b" },
+  Nascimento: { bg: "#dbeafe", color: "#1e40af", label: "Nascimento" },
+  Casamento: { bg: "#fef9c3", color: "#854d0e", label: "Casamento" },
+  Óbito: { bg: "#fee2e2", color: "#991b1b", label: "Óbito" },
 };
 
-function Field({ label, value, mono = false, sub }) {
+const getSexoCasamento = (estadoCivil) => {
+  if (!estadoCivil) return "";
+  const ec = estadoCivil.toLowerCase();
+  if (ec.endsWith('a')) return "Feminino";
+  if (ec.endsWith('o')) return "Masculino";
+  return "";
+};
+
+function Field({ label, value, sub }) {
   return (
-    <div style={{ background: "#f7f7f6", borderRadius: 8, padding: "11px 14px" }}>
-      <p style={{ fontSize: 11, color: "#999", margin: "0 0 3px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-        {label}
-      </p>
-      <p style={{ fontSize: 14, fontWeight: 500, margin: 0, color: "#111", fontFamily: mono ? "monospace" : "inherit", wordBreak: "break-all" }}>
-        {value || "—"}
-      </p>
-      {sub && <p style={{ fontSize: 11, color: "#bbb", margin: "3px 0 0" }}>{sub}</p>}
+    <div className="bg-slate-50 rounded-lg px-3.5 py-2.5">
+      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-0.5">{label}</p>
+      <p className="text-sm font-medium text-slate-900 break-all">{value || '—'}</p>
+      {sub && <p className="text-xs text-slate-400 mt-0.5">{sub}</p>}
     </div>
   );
 }
 
 function Divider({ label }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8, margin: "4px 0 2px" }}>
-      <div style={{ flex: 1, height: "0.5px", background: "#e5e7eb" }} />
-      <span style={{ fontSize: 11, color: "#bbb", textTransform: "uppercase", letterSpacing: "0.06em", whiteSpace: "nowrap" }}>{label}</span>
-      <div style={{ flex: 1, height: "0.5px", background: "#e5e7eb" }} />
+    <div className="flex items-center gap-2 my-1">
+      <div className="flex-1 h-px bg-slate-200" />
+      <span className="text-xs font-medium text-slate-400 uppercase tracking-wider whitespace-nowrap">{label}</span>
+      <div className="flex-1 h-px bg-slate-200" />
     </div>
   );
 }
@@ -710,23 +286,13 @@ function Initials({ name }) {
 
 function Spinner() {
   return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "1.5rem 0" }}>
-      <div style={{ width: 18, height: 18, border: "2px solid #e5e7eb", borderTopColor: "#6366f1", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
-      <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
-      <span style={{ fontSize: 13, color: "#999" }}>Lendo PDF localmente…</span>
+    <div className="flex items-center justify-center gap-2.5 py-6">
+      <div className="w-4 h-4 border-2 border-slate-200 border-t-indigo-500 rounded-full animate-spin" />
+      <span className="text-sm text-slate-400">Extraindo texto do PDF...</span>
     </div>
   );
 }
 
-const getSexoCasamento = (estadoCivil) => {
-  if (!estadoCivil) return "";
-  const ec = estadoCivil.toLowerCase();
-  if (ec.endsWith('a')) return "Feminino";
-  if (ec.endsWith('o')) return "Masculino";
-  return "";
-};
-
-// ── Main Component ────────────────────────────────────────────────────────────
 export default function CertidaoExtractor() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -740,7 +306,10 @@ export default function CertidaoExtractor() {
       setError("Por favor, selecione um arquivo PDF válido.");
       return;
     }
-    setLoading(true); setError(null); setData(null); setFileName(file.name);
+    setLoading(true);
+    setError(null);
+    setData(null);
+    setFileName(file.name);
     try {
       const text = await extractTextFromPDF(file);
       setData(extractFields(text));
@@ -752,98 +321,129 @@ export default function CertidaoExtractor() {
     }
   }, []);
 
-  const onDrop = (e) => { e.preventDefault(); setDrag(false); processFile(e.dataTransfer.files[0]); };
-  const reset = () => { setData(null); setError(null); setFileName(null); inputRef.current.click(); };
+  const onDrop = (e) => {
+    e.preventDefault();
+    setDrag(false);
+    processFile(e.dataTransfer.files[0]);
+  };
+
+  const reset = () => {
+    setData(null);
+    setError(null);
+    setFileName(null);
+    inputRef.current?.click();
+  };
 
   const tipoStyle = data ? (TIPO_STYLE[data.tipoRegistro] || TIPO_STYLE.Nascimento) : null;
 
-  // Header name: for marriage use "Cônjuge 1 & Cônjuge 2"
   const headerName = data?.tipoRegistro === "Casamento"
     ? [data.conjuge1?.nomeAtual || data.conjuge1?.nome, data.conjuge2?.nomeAtual || data.conjuge2?.nome].filter(Boolean).join(" & ")
     : (data?.nomeAtual || data?.nome);
 
   return (
-    <div style={{ maxWidth: 620, margin: "2rem auto", fontFamily: "'Segoe UI', system-ui, sans-serif", color: "#111" }}>
-
-      <div style={{ marginBottom: 20 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 600, margin: "0 0 2px" }}>Leitor de Certidões</h2>
-        <p style={{ fontSize: 12, color: "#aaa", margin: 0 }}>
-          🔒 Processamento 100% local — nenhum dado é enviado a servidores externos
-        </p>
+    <div>
+      <div className="mb-6">
+        <Typography variant="h4" gutterBottom>Leitor de Certidões</Typography>
+        <Typography variant="body2" color="text.secondary">
+          Extraia dados de certidões de nascimento, casamento e óbito em PDF
+        </Typography>
       </div>
+
+      <input
+        ref={inputRef}
+        type="file"
+        accept="application/pdf"
+        className="hidden"
+        onChange={(e) => { if (e.target.files?.[0]) processFile(e.target.files[0]); }}
+      />
 
       {!data && (
         <div
-          onClick={() => !loading && inputRef.current.click()}
+          onClick={() => { if (!loading) inputRef.current?.click(); }}
           onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
           onDragLeave={() => setDrag(false)}
           onDrop={onDrop}
-          style={{
-            border: `2px dashed ${drag ? "#6366f1" : "#d1d5db"}`,
-            borderRadius: 12, padding: "2.2rem 1.5rem", textAlign: "center",
-            cursor: loading ? "default" : "pointer",
-            background: drag ? "#f5f3ff" : "#fafafa",
-            transition: "border-color 0.15s, background 0.15s",
-            marginBottom: 14, userSelect: "none",
-          }}
+          className={`
+            rounded-xl border-2 border-dashed p-10 text-center cursor-pointer select-none transition-all duration-150
+            ${drag ? 'border-indigo-500 bg-indigo-50/50' : 'border-slate-300 bg-white hover:border-indigo-400 hover:bg-slate-50'}
+            ${loading ? 'cursor-default' : ''}
+          `}
         >
-          <div style={{ fontSize: 30, marginBottom: 8 }}>📄</div>
-          <p style={{ fontWeight: 500, margin: "0 0 4px", color: drag ? "#6366f1" : "#222" }}>
-            {loading ? "Processando…" : "Selecionar certidão em PDF"}
-          </p>
-          <p style={{ fontSize: 12, color: "#aaa", margin: 0 }}>
-            {loading ? "Extraindo texto do documento" : "Nascimento · Casamento · Óbito"}
-          </p>
+          <div className="flex justify-center mb-3">
+            {loading ? (
+              <Spinner />
+            ) : (
+              <FileBadge size={40} className="text-slate-300" strokeWidth={1.5} />
+            )}
+          </div>
+          {!loading && (
+            <>
+              <Typography variant="h6" sx={{ mb: 0.5, color: drag ? '#4f46e5' : undefined }}>
+                Selecionar certidão em PDF
+              </Typography>
+              <Typography variant="body2" color="text.disabled">
+                Arraste o arquivo aqui ou clique para selecionar
+              </Typography>
+              <Typography variant="caption" color="text.disabled" sx={{ mt: 0.5, display: 'block' }}>
+                Nascimento · Casamento · Óbito
+              </Typography>
+            </>
+          )}
         </div>
       )}
 
-      <input ref={inputRef} type="file" accept="application/pdf"
-        style={{ display: "none" }} onChange={(e) => { if (e.target.files[0]) processFile(e.target.files[0]); }} />
-
-      {loading && <Spinner />}
-
       {error && (
-        <div style={{ background: "#fff1f2", border: "1px solid #fecdd3", borderRadius: 8, padding: "12px 14px", marginBottom: 14 }}>
-          <p style={{ fontSize: 13, color: "#be123c", margin: 0 }}>⚠️ {error}</p>
+        <div className="mt-4 p-3.5 bg-red-50 border border-red-200 rounded-lg">
+          <Typography variant="body2" color="error" sx={{ fontWeight: 500 }}>
+            {error}
+          </Typography>
         </div>
       )}
 
       {data && (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-
-          {/* Header */}
-          <div style={{ display: "flex", alignItems: "center", gap: 12, background: "#f7f7f6", borderRadius: 10, padding: "12px 14px" }}>
-            <div style={{ width: 42, height: 42, borderRadius: "50%", flexShrink: 0, background: tipoStyle.bg, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 600, fontSize: 13, color: tipoStyle.color }}>
+        <div className="bg-white rounded-xl border border-[var(--color-border)] p-5 space-y-3">
+          <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-xs shrink-0"
+              style={{ background: tipoStyle.bg, color: tipoStyle.color }}
+            >
               <Initials name={headerName} />
             </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontWeight: 600, fontSize: 14, margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                {headerName || "—"}
-              </p>
-              <p style={{ fontSize: 12, color: "#aaa", margin: 0 }}>{fileName}</p>
+            <div className="flex-1 min-w-0">
+              <Typography variant="h6" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', mb: 0 }}>
+                {headerName || '—'}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">{fileName}</Typography>
             </div>
-            <span style={{ background: tipoStyle.bg, color: tipoStyle.color, fontSize: 11, padding: "3px 10px", borderRadius: 6, fontWeight: 500, whiteSpace: "nowrap" }}>
-              {data.tipoRegistro}
-            </span>
+            <Chip
+              label={tipoStyle.label}
+              size="small"
+              sx={{ background: tipoStyle.bg, color: tipoStyle.color, fontWeight: 600, borderRadius: 1.5 }}
+            />
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 8 }}>
+          <div className="grid grid-cols-1 gap-2.5">
             <Field label="Nome da 1ª parte" value={data.tipoRegistro === 'Casamento' ? (data.conjuge1?.nomeAtual || data.conjuge1?.nome) : (data.nomeAtual || data.nome)} />
             <Field label="Sexo da 1ª parte" value={data.tipoRegistro === 'Casamento' ? getSexoCasamento(data.conjuge1?.estadoCivil) : data.sexo} />
             <Field label="Nome da 2ª parte" value={data.tipoRegistro === 'Casamento' ? (data.conjuge2?.nomeAtual || data.conjuge2?.nome) : ''} />
             <Field label="Sexo da 2ª parte" value={data.tipoRegistro === 'Casamento' ? getSexoCasamento(data.conjuge2?.estadoCivil) : ''} />
-            <Field label="Matrícula" value={data.matricula} mono />
-            <Field label="Selo original" value={data.seloDigital} mono />
-            <Field label="Código CNJ da Serventia" value={data.codigoCNS} mono />
+            <Field label="Matrícula" value={data.matricula} />
+            <Field label="Selo Digital" value={data.seloDigital} />
+            <Field label="Código CNS" value={data.codigoCNS} />
             <Field label="Tipo do Registro" value={data.tipoRegistro} />
             <Field label="Data do Evento" value={data.tipoRegistro === 'Casamento' ? data.dataCasamento : data.dataEvento} />
             <Field label="Data do Registro" value={data.dataRegistro} />
           </div>
 
-          <button onClick={reset} style={{ marginTop: 4, padding: "10px 0", background: "transparent", border: "1px solid #d1d5db", borderRadius: 8, cursor: "pointer", fontSize: 13, color: "#555", fontFamily: "inherit" }}>
-            ↩ Carregar outra certidão
-          </button>
-
+          <Button
+            variant="outlined"
+            fullWidth
+            startIcon={<RotateCcw size={15} />}
+            onClick={reset}
+            sx={{ mt: 1 }}
+          >
+            Carregar outra certidão
+          </Button>
         </div>
       )}
     </div>

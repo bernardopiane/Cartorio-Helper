@@ -1,71 +1,63 @@
-import React from 'react';
-import { Button } from 'primereact/button';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { InputText } from 'primereact/inputtext';
-import { Card } from 'primereact/card';
-import styles from './styles.module.css';
+import { useState } from 'react';
+import { Button, Typography, TextField } from '@mui/material';
+import { Wand2 } from 'lucide-react';
 
-function TextFormatter() {
-  const [corpo, setCorpo] = React.useState('');
-  const [matricula, setMatricula] = React.useState('');
+export default function TextFormatter() {
+  const [corpo, setCorpo] = useState('');
+  const [matricula, setMatricula] = useState('');
 
   const formatText = () => {
-    // Remove all break lines
-    const formattedCorpo = corpo.replace(/\n/g, ' ');
-    const formattedMatricula = matricula.replace(/\n/g, '');
-
-    // Remove double spaces
-    const formattedCorpo2 = formattedCorpo.replace(/\s\s/g, ' ');
-    const formattedMatricula2 = formattedMatricula.replace(/\s\s/g, '');
-
-    // Replace double quotes with single quotes
-    const finalCorpo = formattedCorpo2.replace(/"/g, "'");
-    const finalMatricula = formattedMatricula2.replace(/"/g, "'");
-
-    // Remove all dots from matricula
-    const cleanMatricula = finalMatricula.replace(/\./g, '');
-    // Remove all - from matricula
-    const cleanMatricula2 = cleanMatricula.replace(/-/g, '');
-
-    // Update state
-    setCorpo(finalCorpo);
-    setMatricula(cleanMatricula2);
+    const formattedCorpo = corpo.replace(/\n/g, ' ').replace(/\s\s/g, ' ').replace(/"/g, "'");
+    const formattedMatricula = matricula
+      .replace(/\n/g, '')
+      .replace(/\s\s/g, '')
+      .replace(/"/g, "'")
+      .replace(/\./g, '')
+      .replace(/-/g, '');
+    setCorpo(formattedCorpo);
+    setMatricula(formattedMatricula);
   };
 
   return (
-    <div className={styles.textFormatterContainer}>
-      <Card title="Formatador de Texto">
-        <div className={styles.inputsContainer}>
-          <div className={styles.inputGroup}>
-            <label htmlFor="matricula">Matrícula:</label>
-            <InputText
-              id="matricula"
-              value={matricula}
-              onChange={(e) => setMatricula(e.target.value)}
-              placeholder="Digite a matrícula aqui..."
-              className={styles.templateField}
-            />
-          </div>
-          <div className={styles.inputGroup}>
-            <label htmlFor="corpo">Texto:</label>
-            <InputTextarea
-              id="corpo"
-              value={corpo}
-              onChange={(e) => setCorpo(e.target.value)}
-              placeholder="Digite o texto aqui..."
-              rows="5"
-              className={styles.templateField}
-            />
-          </div>
-        </div>
-        <Button
-          label="Formatar"
-          onClick={formatText}
-          className={styles.formatButton}
+    <div>
+      <div className="mb-6">
+        <Typography variant="h4" gutterBottom>Formatador de Texto</Typography>
+        <Typography variant="body2" color="text.secondary">
+          Remova quebras de linha, espaços duplos e caracteres especiais
+        </Typography>
+      </div>
+
+      <div className="bg-white rounded-xl border border-[var(--color-border)] p-6 space-y-4">
+        <TextField
+          fullWidth
+          label="Matrícula"
+          value={matricula}
+          onChange={(e) => setMatricula(e.target.value)}
+          placeholder="Digite a matrícula aqui..."
+          size="small"
         />
-      </Card>
+
+        <TextField
+          fullWidth
+          label="Texto"
+          value={corpo}
+          onChange={(e) => setCorpo(e.target.value)}
+          placeholder="Digite o texto aqui..."
+          multiline
+          rows={5}
+          size="small"
+        />
+
+        <div className="flex justify-end pt-2">
+          <Button
+            variant="contained"
+            startIcon={<Wand2 size={16} />}
+            onClick={formatText}
+          >
+            Formatar
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
-
-export default TextFormatter;
