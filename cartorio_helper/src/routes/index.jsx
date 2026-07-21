@@ -1,9 +1,9 @@
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import NavigationLayout from '../layouts/NavigationLayout';
+import Dashboard from '../pages/Dashboard';
 import FileUploadTable from '../pages/Upload';
 import TextFormatter from '../pages/Formatter';
 import ConsultaCRM from '../pages/Consulta';
-import Dashboard from '../pages/Dashboard';
 import Etiquetas from '../pages/Etiquetas';
 import CertidaoExtractor from '../pages/Certidao';
 
@@ -21,7 +21,6 @@ const AppRouter = () => {
           <Route path="certidao" element={<CertidaoExtractor />} />
         </Route>
       </Routes>
-
     </Router>
   );
 };

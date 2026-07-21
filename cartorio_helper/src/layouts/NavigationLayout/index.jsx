@@ -1,16 +1,17 @@
 import { Outlet } from "react-router-dom";
-import NavigationBar from "../../components/NavigationBar";
-import styles from "./styles.module.css";
+import Sidebar from "../../components/Sidebar";
 
 function NavigationLayout() {
-    return (
-        <div className={styles.container}>
-            <NavigationBar />
-            <div className={styles.content}>
-                <Outlet />
-            </div>
+  return (
+    <div className="h-full flex overflow-hidden">
+      <Sidebar />
+      <main className="flex-1 overflow-y-auto">
+        <div className="max-w-6xl mx-auto p-6">
+          <Outlet />
         </div>
-    );
+      </main>
+    </div>
+  );
 }
 
 export default NavigationLayout;
