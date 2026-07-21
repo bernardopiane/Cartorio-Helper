@@ -69,8 +69,8 @@ export default function Etiquetas() {
 
         <div>
           <Typography variant="subtitle2" sx={{ mb: 1.5, color: 'text.secondary' }}>1º Registrado</Typography>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
+          <div className="flex gap-4 items-end">
+            <div className="flex-1">
               <Typography variant="caption" sx={{ mb: 0.5, display: 'block', color: 'text.secondary' }}>CPF</Typography>
               <InputMask
                 value={cpf1}
@@ -80,14 +80,16 @@ export default function Etiquetas() {
                 className="w-full px-3 py-2 text-sm border border-[var(--color-border)] rounded-lg outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
               />
             </div>
-            <TextField fullWidth label="Nome" value={nome1} onChange={(e) => setNome1(e.target.value)} placeholder="Nome completo" size="small" sx={fieldSx} />
+            <div className="flex-1">
+              <TextField fullWidth label="Nome" value={nome1} onChange={(e) => setNome1(e.target.value)} placeholder="Nome completo" size="small" sx={fieldSx} />
+            </div>
           </div>
         </div>
 
         <div>
           <Typography variant="subtitle2" sx={{ mb: 1.5, color: 'text.secondary' }}>2º Registrado (opcional)</Typography>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
+          <div className="flex gap-4 items-end">
+            <div className="flex-1">
               <Typography variant="caption" sx={{ mb: 0.5, display: 'block', color: 'text.secondary' }}>CPF</Typography>
               <InputMask
                 value={cpf2}
@@ -97,7 +99,9 @@ export default function Etiquetas() {
                 className="w-full px-3 py-2 text-sm border border-[var(--color-border)] rounded-lg outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
               />
             </div>
-            <TextField fullWidth label="Nome" value={nome2} onChange={(e) => setNome2(e.target.value)} placeholder="Nome completo" size="small" sx={fieldSx} />
+            <div className="flex-1">
+              <TextField fullWidth label="Nome" value={nome2} onChange={(e) => setNome2(e.target.value)} placeholder="Nome completo" size="small" sx={fieldSx} />
+            </div>
           </div>
         </div>
 
