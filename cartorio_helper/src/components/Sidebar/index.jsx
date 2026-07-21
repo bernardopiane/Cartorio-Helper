@@ -47,7 +47,7 @@ export default function Sidebar() {
       </nav>
 
       <div className="px-5 py-4 border-t border-white/10">
-        <p className="text-indigo-300/30 text-[11px]">v0.0.6</p>
+        <p className="text-indigo-300/30 text-[11px]">v0.1.0</p>
       </div>
     </aside>
   );
