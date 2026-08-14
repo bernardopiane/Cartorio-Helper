@@ -51,7 +51,8 @@
     },
     "files": [
       "dist/**/*",
-      "electron.js"
+      "electron.js",
+      "preload.js"
     ],
     "win": {
       "target": [

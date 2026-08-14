@@ -1,6 +1,10 @@
 import { app, BrowserWindow } from 'electron';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { format } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 let mainWindow;
 
@@ -11,8 +15,9 @@ function createWindow() {
         minWidth: 960,
         minHeight: 640,
         webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false,
+            nodeIntegration: false,
+            contextIsolation: true,
+            preload: join(__dirname, 'preload.js'),
             webviewTag: true,
         },
     });
