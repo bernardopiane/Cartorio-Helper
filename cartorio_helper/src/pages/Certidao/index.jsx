@@ -1,24 +1,15 @@
 import { useState, useRef, useCallback } from "react";
 import { Button, Typography, Chip } from '@mui/material';
 import { FileBadge, Upload, RotateCcw, FileText } from 'lucide-react';
+import * as pdfjsLib from 'pdfjs-dist';
 
-async function loadPdfJs() {
-  if (window._pdfjsLib) return window._pdfjsLib;
-  await new Promise((res, rej) => {
-    const s = document.createElement("script");
-    s.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
-    s.onload = res; s.onerror = rej;
-    document.head.appendChild(s);
-  });
-  window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-  window._pdfjsLib = window.pdfjsLib;
-  return window._pdfjsLib;
-}
+pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.mjs',
+  import.meta.url
+).toString();
 
 async function extractTextFromPDF(file) {
-  const lib = await loadPdfJs();
-  const pdf = await lib.getDocument({ data: await file.arrayBuffer() }).promise;
+  const pdf = await pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
   let text = "";
   for (let i = 1; i <= pdf.numPages; i++) {
     const page = await pdf.getPage(i);
