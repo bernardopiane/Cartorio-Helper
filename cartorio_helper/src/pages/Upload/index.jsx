@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Typography } from '@mui/material';
-import { Upload as UploadIcon, Trash2, FileSpreadsheet, Download } from 'lucide-react';
+import { Upload as UploadIcon, Trash2, FileSpreadsheet, Download, Copy, Check } from 'lucide-react';
 
 function getCodigo(child) {
   switch (child.nodeName) {
@@ -68,6 +68,7 @@ function getRecordData(child, isRCPN) {
 
 export default function FileUploadTable() {
   const [tableData, setTableData] = useState([]);
+  const [copied, setCopied] = useState(false);
 
   function readFileContent(file) {
     return new Promise((resolve, reject) => {
@@ -145,6 +146,20 @@ export default function FileUploadTable() {
     URL.revokeObjectURL(url);
   }
 
+  async function copyTableToClipboard() {
+    if (tableData.length === 0) return;
+    const text = tableData.map(row =>
+      COLUMNS.map(({ key }) => row[key] ?? '').join('\t')
+    ).join('\n');
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  }
+
   const COLUMNS = [
     { key: 'selo', label: 'Selo' },
     { key: 'codigo', label: 'Código' },
@@ -169,6 +184,7 @@ export default function FileUploadTable() {
     { key: 'acoterj', label: 'Acoterj' },
     { key: 'issqn', label: 'ISSQN' },
     { key: 'valorDistribuidor', label: 'Valor Distribuidor' },
+    
     { key: 'seloEletronico', label: 'Selo Eletrônico' },
   ];
 
@@ -192,6 +208,14 @@ export default function FileUploadTable() {
         </Button>
         {tableData.length > 0 && (
           <>
+            <Button
+              variant="outlined"
+              startIcon={copied ? <Check size={16} /> : <Copy size={16} />}
+              onClick={copyTableToClipboard}
+              color={copied ? 'success' : 'primary'}
+            >
+              {copied ? 'Copiado!' : 'Copiar Tabela'}
+            </Button>
             <Button
               variant="outlined"
               startIcon={<Download size={16} />}
