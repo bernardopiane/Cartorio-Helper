@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Typography } from '@mui/material';
-import { Upload as UploadIcon, Trash2, FileSpreadsheet } from 'lucide-react';
+import { Upload as UploadIcon, Trash2, FileSpreadsheet, Download } from 'lucide-react';
 
 function getCodigo(child) {
   switch (child.nodeName) {
@@ -124,6 +124,27 @@ export default function FileUploadTable() {
     setTableData([]);
   }
 
+  function exportCSV() {
+    if (tableData.length === 0) return;
+    const separator = ';';
+    const header = COLUMNS.map(c => c.label).join(separator);
+    const rows = tableData.map(row =>
+      COLUMNS.map(({ key }) => {
+        const val = (row[key] ?? '').toString().replace(/"/g, '""');
+        return `"${val}"`;
+      }).join(separator)
+    );
+    const bom = '\uFEFF';
+    const csv = bom + [header, ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `registros_${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
   const COLUMNS = [
     { key: 'selo', label: 'Selo' },
     { key: 'codigo', label: 'Código' },
@@ -170,14 +191,23 @@ export default function FileUploadTable() {
           <input type="file" accept=".xml" hidden onChange={handleFileChange} />
         </Button>
         {tableData.length > 0 && (
-          <Button
-            variant="outlined"
-            color="error"
-            startIcon={<Trash2 size={16} />}
-            onClick={clearData}
-          >
-            Limpar ({tableData.length} registros)
-          </Button>
+          <>
+            <Button
+              variant="outlined"
+              startIcon={<Download size={16} />}
+              onClick={exportCSV}
+            >
+              Exportar CSV
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              startIcon={<Trash2 size={16} />}
+              onClick={clearData}
+            >
+              Limpar ({tableData.length} registros)
+            </Button>
+          </>
         )}
       </div>
 

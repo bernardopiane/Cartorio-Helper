@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Button, Typography, TextField, Checkbox, FormControlLabel } from '@mui/material';
+import { Button, Typography, TextField, Checkbox, FormControlLabel, Snackbar, Alert } from '@mui/material';
+import { Copy, Check } from 'lucide-react';
 import { InputMask } from 'primereact/inputmask';
 
 export default function Etiquetas() {
@@ -40,6 +41,18 @@ export default function Etiquetas() {
   };
 
   const inputText = generateTemplate();
+
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(inputText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
 
   const fieldSx = { '& .MuiOutlinedInput-root': { fontSize: '0.875rem' } };
 
@@ -129,7 +142,18 @@ export default function Etiquetas() {
         )}
 
         <div>
-          <Typography variant="subtitle2" sx={{ mb: 1, color: 'text.secondary' }}>Texto Gerado</Typography>
+          <div className="flex items-center justify-between mb-1">
+            <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>Texto Gerado</Typography>
+            <Button
+              variant="outlined"
+              size="small"
+              startIcon={copied ? <Check size={14} /> : <Copy size={14} />}
+              onClick={handleCopy}
+              color={copied ? 'success' : 'primary'}
+            >
+              {copied ? 'Copiado!' : 'Copiar'}
+            </Button>
+          </div>
           <TextField
             fullWidth
             multiline
