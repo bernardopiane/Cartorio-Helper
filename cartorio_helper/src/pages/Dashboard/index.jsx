@@ -102,17 +102,10 @@ export default function Dashboard() {
             <p className="mt-2 text-[length:var(--text-sm)] leading-[1.55] text-[color-mix(in_oklab,var(--color-sidebar-ink-2)_78%,var(--color-sidebar-ink))]">
               Antes de despachar o lote de averbação, confira a assinatura digital ICP-Brasil e a correção do livro A/B com a comarca de origem.
             </p>
-            <div className="mt-auto pt-6 flex items-center justify-between gap-3 flex-wrap">
+            <div className="mt-auto pt-6">
               <span className="font-[var(--font-outlier)] text-[length:var(--text-xs)] text-[color-mix(in_oklab,var(--color-sidebar-ink)_85%,transparent)]">
                 Cartilha Operacional 2026
               </span>
-              <a
-                className="text-[length:var(--text-xs)] font-semibold text-[var(--color-sidebar-ink)] underline underline-offset-2 decoration-[var(--color-rule-2)]"
-                href="#/dashboard"
-                onClick={(e) => e.preventDefault()}
-              >
-                Manual de Uso
-              </a>
             </div>
           </li>
         </ul>

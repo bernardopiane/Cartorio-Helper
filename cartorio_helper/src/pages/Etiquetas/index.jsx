@@ -61,8 +61,10 @@ export default function Etiquetas() {
     });
   }, [cpf1, nome1, cpf2, nome2, processo, selo, livro, folha, termos, motivo, naoAverbacao]);
 
-  // handoff: the remessa ledger already parsed where the record lives
-  const remessa = loadState('upload');
+  // handoff: the remessa ledger already parsed where the record lives —
+  // read once per mount; navigating away unmounts this page first, so it
+  // never goes stale (the upload page updates it before you could return)
+  const [remessa] = useState(() => loadState('upload'));
   const lastRecord = remessa?.records?.length ? remessa.records[remessa.records.length - 1] : null;
 
   function preencherDaRemessa() {

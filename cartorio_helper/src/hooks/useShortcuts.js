@@ -8,7 +8,6 @@ export const SHORTCUTS = [
   { combo: 'Alt+E', key: 'e', label: 'Gerador de Etiquetas', path: '/etiquetas' },
   { combo: 'Alt+L', key: 'l', label: 'Leitor de Certidões PDF', path: '/certidao' },
   { combo: 'Alt+C', key: 'c', label: 'Consulta CRM / CREMERJ', path: '/consulta' },
-  { combo: 'Alt+N', key: 'n', label: 'Nova Averbação', path: '/etiquetas' },
 ];
 
 export function findShortcut(e) {
