@@ -12,7 +12,8 @@ function NavigationLayout() {
       <div className="flex-1 flex flex-col overflow-hidden min-w-0">
         <TopBar />
         <main id="main" className="flex-1 overflow-y-auto">
-          <div className="px-8 py-7 2xl:px-12">
+          {/* airy cap: legible line lengths on huge monitors, full width below */}
+          <div className="px-8 py-7 2xl:px-12 max-w-[110rem] mx-auto">
             <Outlet />
           </div>
         </main>

@@ -52,6 +52,7 @@ export default function Sidebar() {
               type="button"
               onClick={() => navigate(path)}
               aria-label={label}
+              title={label}
               aria-current={active ? 'page' : undefined}
               className={`
                 sidebar-label-wrap w-full flex items-center gap-2.5 px-2.5 py-2 text-left cursor-pointer border-none rounded-lg
