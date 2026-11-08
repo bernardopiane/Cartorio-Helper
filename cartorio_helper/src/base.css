@@ -1,4 +1,7 @@
 *, *::before, *::after { box-sizing: border-box; }
+/* the app shell is viewport-height: this chain is what lets the sidebar rail
+ * and the scrollable column stretch with the window (fullscreen included) */
+html, body, #root { height: 100%; }
 html, body { overflow-x: clip; }
 html { scrollbar-color: var(--color-muted) var(--color-paper); scroll-padding-top: var(--space-3xl); }
 body { margin: 0; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-md); line-height: 1.55; -webkit-font-smoothing: antialiased; caret-color: var(--color-accent); }
