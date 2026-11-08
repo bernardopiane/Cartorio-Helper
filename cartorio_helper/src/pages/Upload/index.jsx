@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Upload as UploadIcon, Trash2, Download, Copy, Check } from 'lucide-react';
+import { Upload as UploadIcon, Trash2, Download, Copy, Check, CircleCheck } from 'lucide-react';
 import { loadState, saveState } from '../../utils/storage.js';
 import { formatCurrency, parseMoney } from '../../utils/money.js';
 
@@ -78,6 +78,34 @@ const COLUMNS = [
   { key: 'dataEntrada', label: 'Data Entrada' },
   { key: 'pago', label: 'Pago' },
   { key: 'gratuito', label: 'Gratuito' },
+  { key: 'livro', label: 'Livro' },
+  { key: 'folha', label: 'Folha' },
+  { key: 'termo', label: 'Termo' },
+  { key: 'emolumentos', label: 'Emolumentos' },
+  { key: 'lei3217', label: 'Lei 3217' },
+  { key: 'lei4664', label: 'Lei 4664' },
+  { key: 'lei111', label: 'Lei 111' },
+  { key: 'funarpen', label: 'Funarpen' },
+  { key: 'funpgalerj', label: 'FUNPGALERJ' },
+  { key: 'funpgt', label: 'FUNPGT' },
+  { key: 'fundacPguerj', label: 'FUNDAC_PGUERJ' },
+  { key: 'mutua', label: 'Mútua' },
+  { key: 'acoterj', label: 'Acoterj' },
+  { key: 'issqn', label: 'ISSQN' },
+  { key: 'valorDistribuidor', label: 'Valor Distribuidor' },
+  { key: 'seloEletronico', label: 'Selo Eletrônico' },
+];
+
+/* on screen the paid/free X-columns collapse into one status chip (the
+ * redesign); CSV export and table copy keep the remessa contract via COLUMNS */
+const DISPLAY_COLUMNS = [
+  { key: 'selo', label: 'Selo' },
+  { key: 'codigo', label: 'Cód. RCPN' },
+  { key: 'rcpn', label: 'RCPN' },
+  { key: 'rit', label: 'RIT' },
+  { key: 'protocolo', label: 'Protocolo' },
+  { key: 'dataEntrada', label: 'Data Entrada' },
+  { key: 'status', label: 'Status / Tipo' },
   { key: 'livro', label: 'Livro' },
   { key: 'folha', label: 'Folha' },
   { key: 'termo', label: 'Termo' },
@@ -276,10 +304,17 @@ export default function FileUploadTable() {
   return (
     <div>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-[var(--color-ink)] text-[var(--text-display)]">Upload de Arquivos</h1>
+        <div className="max-w-[52ch]">
+          <p className="flex items-center gap-2 text-[var(--text-xs)] font-[var(--font-outlier)] tracking-[0.08em] uppercase text-[var(--color-muted)] m-0">
+            <CircleCheck size={13} strokeWidth={1.8} aria-hidden="true" className="text-[var(--color-accent)]" />
+            Módulo de Validação &amp; Auditoria de Livros
+          </p>
+          <h1 className="mt-1 text-[var(--color-ink)] text-[var(--text-display)]! max-w-none">
+            Upload e Processamento de Remessas XML
+          </h1>
           <p className="mt-1 text-[var(--text-sm)] text-[var(--color-muted)]">
-            Carregue arquivos XML de remessa para processar os registros
+            Carregue arquivos XML de remessa para auditar registros, calcular emolumentos e
+            gerar relatórios notariais oficiais.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -291,7 +326,7 @@ export default function FileUploadTable() {
             disabled={busy}
           >
             <UploadIcon size={15} strokeWidth={1.75} aria-hidden="true" />
-            {busy ? 'Lendo XML…' : 'Carregar XML'}
+            {busy ? 'Lendo XML…' : 'Carregar XML de Remessa'}
           </button>
           {tableData.length > 0 && (
             <>
@@ -301,7 +336,7 @@ export default function FileUploadTable() {
               </button>
               <button type="button" className="btn" onClick={exportCSV}>
                 <Download size={15} strokeWidth={1.75} aria-hidden="true" />
-                Exportar CSV
+                Exportar CSV / Excel
               </button>
               <button
                 type="button"
@@ -340,7 +375,7 @@ export default function FileUploadTable() {
             <table className="ledger">
               <thead>
                 <tr>
-                  {COLUMNS.map(({ key, label }) => (
+                  {DISPLAY_COLUMNS.map(({ key, label }) => (
                     <th key={key} scope="col" className={NUM_COLUMNS.has(key) ? 'num' : undefined}>
                       {label}
                     </th>
@@ -350,11 +385,30 @@ export default function FileUploadTable() {
               <tbody>
                 {tableData.map((row, i) => (
                   <tr key={i}>
-                    {COLUMNS.map(({ key }) => (
-                      <td key={key} className={NUM_COLUMNS.has(key) ? 'num' : undefined}>
-                        {row[key] ?? ''}
-                      </td>
-                    ))}
+                    {DISPLAY_COLUMNS.map(({ key }) => {
+                      if (key === 'status') {
+                        const pago = row.pago === 'X';
+                        return (
+                          <td key={key}>
+                            <span className={`pill ${pago ? 'pill--error' : 'pill--info'}`}>
+                              {pago ? 'Pago' : 'Gratuito'}
+                            </span>
+                          </td>
+                        );
+                      }
+                      return (
+                        <td
+                          key={key}
+                          className={
+                            NUM_COLUMNS.has(key)
+                              ? `num ${key === 'selo' ? '!text-[var(--color-accent)] font-semibold' : ''}`
+                              : undefined
+                          }
+                        >
+                          {row[key] ?? ''}
+                        </td>
+                      );
+                    })}
                   </tr>
                 ))}
               </tbody>
@@ -382,8 +436,14 @@ export default function FileUploadTable() {
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInputRef.current?.click(); } }}
           className={`dropzone cursor-pointer ${drag ? 'dropzone--drag' : ''}`}
         >
-          <p className="font-[var(--font-body)] font-medium text-[var(--color-ink)] text-[var(--text-md)] m-0">
-            Nenhum arquivo carregado
+          <span
+            aria-hidden="true"
+            className="w-12 h-12 grid place-items-center rounded-xl bg-[color-mix(in_oklab,var(--color-accent)_9%,var(--color-sheet))]"
+          >
+            <UploadIcon size={22} strokeWidth={1.6} className="text-[var(--color-accent)]" />
+          </span>
+          <p className="font-[var(--font-display)] font-semibold text-[var(--color-ink)] text-[var(--text-md)] m-0 mt-1">
+            Selecionar arquivo XML de remessa
           </p>
           <p className="m-0 text-[var(--text-sm)] text-[var(--color-muted)]">
             Arraste o XML aqui ou clique para selecionar
