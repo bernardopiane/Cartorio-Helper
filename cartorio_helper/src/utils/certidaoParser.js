@@ -50,7 +50,7 @@ export function parseDate(raw) {
     const day = writtenToNumber(written[1]);
     const mon = MESES_NUM[written[2]];
     const year = writtenToNumber(written[3]);
-    if (!isNaN(day) && mon && !isNaN(year) && year > 1800 && year < 2200)
+    if (day > 0 && day <= 31 && mon && !isNaN(year) && year > 1800 && year < 2200)
       return `${String(day).padStart(2, "0")}/${mon}/${year}`;
   }
   return raw.replace(/\s+/g, " ").trim();

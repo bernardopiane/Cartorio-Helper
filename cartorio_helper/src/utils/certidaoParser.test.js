@@ -45,6 +45,14 @@ describe('parseDate', () => {
     expect(parseDate('3 de dezembro de 2024')).toBe('03/12/2024');
   });
 
+  it('rejects impossible days in written dates instead of emitting day 00', () => {
+    // writtenToNumber silently maps unknown words to 0 — the day guard must catch it
+    expect(parseDate('abcdefgh de maio de 2024')).toBe('abcdefgh de maio de 2024');
+    expect(parseDate('trinta e dois de janeiro de 2024')).toBe(
+      'trinta e dois de janeiro de 2024'
+    );
+  });
+
   it('returns something for unparseable input instead of crashing', () => {
     expect(parseDate('sem data')).toBe('sem data');
     expect(parseDate('')).toBeNull();
