@@ -9,20 +9,15 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "test": "vitest run",
     "start": "electron .",
     "electron:dev": "electron .",
-    "package": "electron-builder"
+    "package": "vite build && electron-builder"
   },
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
-    "@mui/material": "^7.1.0",
     "@tailwindcss/vite": "^4.1.7",
-    "axios": "^1.9.0",
-    "express": "^5.1.0",
     "lucide-react": "^0.562.0",
     "pdfjs-dist": "^6.2.108",
-    "primereact": "^10.9.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.1",
@@ -40,14 +35,15 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vitest": "^3.2.4"
   },
   "build": {
     "appId": "com.bernardopiane.cartorio_helper",
     "productName": "Cartório Helper",
     "copyright": "Copyright © 2025 Bernardopiane",
     "directories": {
-      "output": "dist"
+      "output": "release"
     },
     "files": [
       "dist/**/*",

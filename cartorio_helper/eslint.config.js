@@ -40,7 +40,7 @@ export default [
     },
   },
   {
-    files: ['electron.js'],
+    files: ['electron.js', 'preload.js'],
     languageOptions: {
       globals: { ...globals.node },
     },

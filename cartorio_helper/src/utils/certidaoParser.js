@@ -1,16 +1,14 @@
-/**
- * Month name to number mapping (Portuguese).
- */
+// Certidão text extraction: Portuguese written numbers, dates, and field
+// extraction from the flattened certificate PDF text. Pure module — no DOM,
+// safe to unit test.
+
 export const MESES_NUM = {
   janeiro: "01", fevereiro: "02", março: "03", marco: "03",
   abril: "04", maio: "05", junho: "06", julho: "07",
   agosto: "08", setembro: "09", outubro: "10", novembro: "11", dezembro: "12",
 };
 
-/**
- * Written number units (Portuguese).
- */
-export const UNIDADES = {
+const UNIDADES = {
   zero: 0, um: 1, uma: 1, dois: 2, duas: 2, três: 3, tres: 3, quatro: 4, cinco: 5,
   seis: 6, sete: 7, oito: 8, nove: 9, dez: 10, onze: 11, doze: 12, treze: 13,
   quatorze: 14, catorze: 14, quinze: 15, dezesseis: 16, dezasseis: 16,
@@ -18,22 +16,13 @@ export const UNIDADES = {
   vinte: 20, trinta: 30, quarenta: 40, cinquenta: 50, sessenta: 60,
   setenta: 70, oitenta: 80, noventa: 90,
 };
-
-/**
- * Written number hundreds (Portuguese).
- */
-export const CENTENAS = {
+const CENTENAS = {
   cem: 100, cento: 100, duzentos: 200, duzentas: 200, trezentos: 300, trezentas: 300,
   quatrocentos: 400, quatrocentas: 400, quinhentos: 500, quinhentas: 500,
   seiscentos: 600, seiscentas: 600, setecentos: 700, setecentas: 700,
   oitocentos: 800, oitocentas: 800, novecentos: 900, novecentas: 900,
 };
 
-/**
- * Convert a written number string (Portuguese) to a numeric value.
- * @param {string} str - written number (e.g. "vinte e cinco")
- * @returns {number} numeric value or NaN
- */
 export function writtenToNumber(str) {
   if (!str) return NaN;
   const words = str.toLowerCase().replace(/[, -]/g, " ").trim().split(/\s+/).filter(w => w && w !== "e");
@@ -46,13 +35,6 @@ export function writtenToNumber(str) {
   return total + cur;
 }
 
-/**
- * Parse a date string in various formats to DD/MM/YYYY.
- * Supports: numeric (15/03/2024), mixed (15 de março de 2024),
- * and fully written (vinte e cinco de dezembro de dois mil e vinte e três).
- * @param {string} raw - raw date string
- * @returns {string|null} formatted date or null
- */
 export function parseDate(raw) {
   if (!raw) return null;
   const num = raw.match(/(\d{1,2})[/-](\d{1,2})[/-](\d{4})/);
@@ -74,11 +56,6 @@ export function parseDate(raw) {
   return raw.replace(/\s+/g, " ").trim();
 }
 
-/**
- * Extract a date from a chunk using Dia/Mês/Ano pattern.
- * @param {string} chunk - text chunk to search
- * @returns {string|null} formatted date or null
- */
 export function dateFromDMA(chunk) {
   const d = chunk.match(/Dia\s+(\d{1,2})/i);
   const m = chunk.match(/M[eê]s\s+(\d{1,2})/i);
@@ -88,33 +65,15 @@ export function dateFromDMA(chunk) {
   return null;
 }
 
-/**
- * Extract a date from text following a label pattern.
- * @param {string} text - full text to search
- * @param {string} labelPattern - regex pattern for the label
- * @returns {string|null} formatted date or null
- */
-export function extractDateFromLabel(text, labelPattern) {
+function extractDateFromLabel(text, labelPattern) {
   const re = new RegExp(labelPattern + "(.{0,300})", "i");
   const m = text.match(re);
   return m ? dateFromDMA(m[1]) : null;
 }
 
-/**
- * Clean a string by collapsing whitespace.
- * @param {string} s
- * @returns {string|null}
- */
-export function clean(s) { return s ? s.replace(/\s+/g, " ").trim() : null; }
+function clean(s) { return s ? s.replace(/\s+/g, " ").trim() : null; }
 
-/**
- * Parse a field from text using multiple regex patterns.
- * Returns the first match found.
- * @param {string} text - text to search
- * @param {...RegExp} patterns - regex patterns with capture group
- * @returns {string|null}
- */
-export function parseField(text, ...patterns) {
+function parseField(text, ...patterns) {
   for (const pat of patterns) {
     const m = text.match(pat);
     if (m) return clean(m[1]);
@@ -122,12 +81,7 @@ export function parseField(text, ...patterns) {
   return null;
 }
 
-/**
- * Extract birth certificate fields.
- * @param {string} t - flattened text
- * @returns {object}
- */
-export function extractNascimento(t) {
+function extractNascimento(t) {
   const nome = parseField(t,
     /Nome\s+([A-ZÁÉÍÓÚÂÊÔÃÕÇÀÜ][A-ZÁÉÍÓÚÂÊÔÃÕÇÀÜ\s]+?)(?:\s+N[uú]mero do CPF|\s+Matr[ií]cula|\s+CPF)/i,
   );
@@ -146,12 +100,7 @@ export function extractNascimento(t) {
   return { nome, nomeAtual, sexo, dataEvento, dataRegistro };
 }
 
-/**
- * Extract death certificate fields.
- * @param {string} t - flattened text
- * @returns {object}
- */
-export function extractObito(t) {
+function extractObito(t) {
   const nome = parseField(t,
     /Nome\s+([A-ZÁÉÍÓÚÂÊÔÃÕÇÀÜ][A-ZÁÉÍÓÚÂÊÔÃÕÇÀÜa-záéíóúâêôãõçàü\s]+?)(?:\s+N[uú]mero do CPF|\s+Matr[ií]cula|\s+CPF)/i,
   );
@@ -168,12 +117,7 @@ export function extractObito(t) {
   return { nome, nomeAtual, sexo, dataEvento, dataRegistro };
 }
 
-/**
- * Extract marriage certificate fields.
- * @param {string} t - flattened text
- * @returns {object}
- */
-export function extractCasamento(t) {
+function extractCasamento(t) {
   const split = t.split(/2[°º]\s*C[oô]njuge/i);
   const part1 = split[0];
   const part2 = split[1] || "";
@@ -226,24 +170,6 @@ export function extractCasamento(t) {
   return { conjuge1, conjuge2, dataCasamento, dataRegistro, regimeBens };
 }
 
-/**
- * Infer sex from estado civil suffix.
- * @param {string} estadoCivil
- * @returns {string}
- */
-export function getSexoCasamento(estadoCivil) {
-  if (!estadoCivil) return "";
-  const ec = estadoCivil.toLowerCase();
-  if (ec.endsWith('a')) return "Feminino";
-  if (ec.endsWith('o')) return "Masculino";
-  return "";
-}
-
-/**
- * Main extraction function. Detects certificate type and extracts all fields.
- * @param {string} rawText - raw text from PDF
- * @returns {object} extracted fields
- */
 export function extractFields(rawText) {
   const t = rawText.replace(/\n/g, " ");
 
@@ -290,3 +216,11 @@ export function extractFields(rawText) {
 
   return { ...base, ...extractNascimento(t) };
 }
+
+export const getSexoCasamento = (estadoCivil) => {
+  if (!estadoCivil) return "";
+  const ec = estadoCivil.toLowerCase();
+  if (ec.endsWith('a')) return "Feminino";
+  if (ec.endsWith('o')) return "Masculino";
+  return "";
+};

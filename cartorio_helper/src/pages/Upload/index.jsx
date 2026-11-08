@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { Button, Typography } from '@mui/material';
-import { Upload as UploadIcon, Trash2, FileSpreadsheet, Download, Copy, Check } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { Upload as UploadIcon, Trash2, Download, Copy, Check } from 'lucide-react';
+import { loadState, saveState } from '../../utils/storage.js';
+import { formatCurrency, parseMoney } from '../../utils/money.js';
 
 function getCodigo(child) {
   switch (child.nodeName) {
@@ -34,10 +35,6 @@ function getRecordData(child, isRCPN) {
     return hasEmolumentos ? (emolumentosNode.getAttribute(attributeName) || '') : '';
   };
 
-  const formatCurrency = (value) => {
-    return value ? value.replace('.', ',') : '';
-  };
-
   return {
     selo: child.getAttribute('Selo')?.slice(-5) || '',
     codigo: getCodigo(child),
@@ -66,9 +63,74 @@ function getRecordData(child, isRCPN) {
   };
 }
 
+const NUM_COLUMNS = new Set([
+  'emolumentos', 'lei3217', 'lei4664', 'lei111', 'funarpen', 'funpgalerj',
+  'funpgt', 'fundacPguerj', 'mutua', 'acoterj', 'issqn', 'valorDistribuidor',
+  'seloEletronico', 'codigo', 'selo', 'termo',
+]);
+
+const COLUMNS = [
+  { key: 'selo', label: 'Selo' },
+  { key: 'codigo', label: 'Código' },
+  { key: 'rcpn', label: 'RCPN' },
+  { key: 'rit', label: 'RIT' },
+  { key: 'protocolo', label: 'Protocolo' },
+  { key: 'dataEntrada', label: 'Data Entrada' },
+  { key: 'pago', label: 'Pago' },
+  { key: 'gratuito', label: 'Gratuito' },
+  { key: 'livro', label: 'Livro' },
+  { key: 'folha', label: 'Folha' },
+  { key: 'termo', label: 'Termo' },
+  { key: 'emolumentos', label: 'Emolumentos' },
+  { key: 'lei3217', label: 'Lei 3217' },
+  { key: 'lei4664', label: 'Lei 4664' },
+  { key: 'lei111', label: 'Lei 111' },
+  { key: 'funarpen', label: 'Funarpen' },
+  { key: 'funpgalerj', label: 'FUNPGALERJ' },
+  { key: 'funpgt', label: 'FUNPGT' },
+  { key: 'fundacPguerj', label: 'FUNDAC_PGUERJ' },
+  { key: 'mutua', label: 'Mútua' },
+  { key: 'acoterj', label: 'Acoterj' },
+  { key: 'issqn', label: 'ISSQN' },
+  { key: 'valorDistribuidor', label: 'Valor Distribuidor' },
+  { key: 'seloEletronico', label: 'Selo Eletrônico' },
+];
+
 export default function FileUploadTable() {
-  const [tableData, setTableData] = useState([]);
+  const fileInputRef = useRef(null);
+  const [saved] = useState(() => loadState('upload') || { records: [], files: [] });
+  const [tableData, setTableData] = useState(saved.records || []);
+  const [fileNames, setFileNames] = useState(saved.files || []);
   const [copied, setCopied] = useState(false);
+  const [error, setError] = useState(null);
+  const [info, setInfo] = useState(null);
+  const [drag, setDrag] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [armed, setArmed] = useState(false);
+  const armTimerRef = useRef(null);
+  const armedAtRef = useRef(0);
+  const tableDataRef = useRef(null);
+
+  useEffect(() => {
+    tableDataRef.current = tableData;
+  }, [tableData]);
+
+  // the ledger keeps its own bookkeeping line: everything the register charged
+  const totalEmolumentos = tableData.reduce(
+    (sum, row) => sum + parseMoney(row.emolumentos), 0
+  );
+  const fmtEmolumentos = new Intl.NumberFormat('pt-BR', {
+    style: 'currency', currency: 'BRL',
+  }).format(totalEmolumentos);
+
+  // the parse survives refresh: same records, same files, same day
+  useEffect(() => {
+    if (tableData.length === 0) saveState('upload', null);
+    else saveState('upload', { records: tableData, files: fileNames });
+  }, [tableData, fileNames]);
+
+  // the armed "limpar" stands down if the confirmation never comes
+  useEffect(() => () => clearTimeout(armTimerRef.current), []);
 
   function readFileContent(file) {
     return new Promise((resolve, reject) => {
@@ -80,9 +142,14 @@ export default function FileUploadTable() {
   }
 
   async function loadData(file) {
-    if (!file) return;
+    if (!file || busy) return;
 
+    setBusy(true);
+    setError(null);
+    setInfo(null);
     try {
+      // let the browser paint the busy state before the synchronous parse takes the thread
+      await new Promise((resolve) => setTimeout(resolve, 50));
       const fileContent = await readFileContent(file);
       const parser = new DOMParser();
       const doc = parser.parseFromString(fileContent, 'text/xml');
@@ -90,7 +157,10 @@ export default function FileUploadTable() {
       const isRCPN = doc.getElementsByTagName('CivilPessoasNaturais').length > 0;
 
       const remessa = doc.getElementsByTagName('Remessa')[0];
-      if (!remessa) return;
+      if (!remessa) {
+        setError('O arquivo não contém uma remessa. Selecione um XML gerado pelo sistema do cartório.');
+        return;
+      }
 
       const dataArray = Array.from(remessa.children)
         .filter(child => child.hasAttribute('Selo') || child.hasAttribute('CCT'))
@@ -101,17 +171,41 @@ export default function FileUploadTable() {
           return sa - sb;
         });
 
-      setTableData(prev => {
-        const combined = [...prev, ...dataArray];
-        combined.sort((a, b) => {
-          const sa = parseInt(a.selo) || 0;
-          const sb = parseInt(b.selo) || 0;
-          return sa - sb;
+      if (dataArray.length === 0) {
+        setError('A remessa não contém registros processáveis. Verifique o arquivo e tente novamente.');
+        return;
+      }
+
+      // loading the same remessa twice must never inflate the sum:
+      // dedupe on selo + código and say so, instead of silently doubling
+      const registroKey = (r) => `${r.selo}::${r.codigo}`;
+      const seen = new Set(tableDataRef.current.map(registroKey));
+      const fresh = dataArray.filter((r) => !seen.has(registroKey(r)));
+      const repeated = dataArray.length - fresh.length;
+
+      if (fresh.length > 0) {
+        setTableData(prev => {
+          const combined = [...prev, ...fresh];
+          combined.sort((a, b) => {
+            const sa = parseInt(a.selo) || 0;
+            const sb = parseInt(b.selo) || 0;
+            return sa - sb;
+          });
+          return combined;
         });
-        return combined;
-      });
+        setFileNames(prev => [...new Set([...prev, file.name])]);
+      }
+      if (repeated > 0) {
+        const plural = repeated !== 1 ? 's' : '';
+        setInfo(
+          `${repeated} registro${plural} desta remessa já estavam na tabela — não foram repetidos.`
+        );
+      }
     } catch (error) {
       console.error("Error processing file:", error);
+      setError('Não foi possível ler o arquivo. Verifique se é um XML de remessa válido.');
+    } finally {
+      setBusy(false);
     }
   }
 
@@ -121,7 +215,26 @@ export default function FileUploadTable() {
     e.target.value = '';
   }
 
+  function handleDrop(e) {
+    e.preventDefault();
+    setDrag(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) loadData(file);
+  }
+
   function clearData() {
+    // two steps: arm (vermelho), then confirm — a misfired click never wipes the ledger
+    if (!armed) {
+      setArmed(true);
+      armedAtRef.current = Date.now();
+      clearTimeout(armTimerRef.current);
+      armTimerRef.current = setTimeout(() => setArmed(false), 3000);
+      return;
+    }
+    // the habit double-click lands inside the label repaint — it is not a confirmation
+    if (Date.now() - armedAtRef.current < 350) return;
+    clearTimeout(armTimerRef.current);
+    setArmed(false);
     setTableData([]);
   }
 
@@ -160,89 +273,75 @@ export default function FileUploadTable() {
     }
   }
 
-  const COLUMNS = [
-    { key: 'selo', label: 'Selo' },
-    { key: 'codigo', label: 'Código' },
-    { key: 'rcpn', label: 'RCPN' },
-    { key: 'rit', label: 'RIT' },
-    { key: 'protocolo', label: 'Protocolo' },
-    { key: 'dataEntrada', label: 'Data Entrada' },
-    { key: 'pago', label: 'Pago' },
-    { key: 'gratuito', label: 'Gratuito' },
-    { key: 'livro', label: 'Livro' },
-    { key: 'folha', label: 'Folha' },
-    { key: 'termo', label: 'Termo' },
-    { key: 'emolumentos', label: 'Emolumentos' },
-    { key: 'lei3217', label: 'Lei 3217' },
-    { key: 'lei4664', label: 'Lei 4664' },
-    { key: 'lei111', label: 'Lei 111' },
-    { key: 'funarpen', label: 'Funarpen' },
-    { key: 'funpgalerj', label: 'FUNPGALERJ' },
-    { key: 'funpgt', label: 'FUNPGT' },
-    { key: 'fundacPguerj', label: 'FUNDAC_PGUERJ' },
-    { key: 'mutua', label: 'Mútua' },
-    { key: 'acoterj', label: 'Acoterj' },
-    { key: 'issqn', label: 'ISSQN' },
-    { key: 'valorDistribuidor', label: 'Valor Distribuidor' },
-    
-    { key: 'seloEletronico', label: 'Selo Eletrônico' },
-  ];
-
   return (
     <div>
-      <div className="mb-6">
-        <Typography variant="h4" gutterBottom>Upload de Arquivos</Typography>
-        <Typography variant="body2" color="text.secondary">
-          Carregue arquivos XML de remessa para processar os registros
-        </Typography>
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="text-[var(--color-ink)] text-[var(--text-display)]">Upload de Arquivos</h1>
+          <p className="mt-1 text-[var(--text-sm)] text-[var(--color-muted)]">
+            Carregue arquivos XML de remessa para processar os registros
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            className="btn btn--primary"
+            onClick={() => fileInputRef.current?.click()}
+            aria-busy={busy}
+            disabled={busy}
+          >
+            <UploadIcon size={15} strokeWidth={1.75} aria-hidden="true" />
+            {busy ? 'Lendo XML…' : 'Carregar XML'}
+          </button>
+          {tableData.length > 0 && (
+            <>
+              <button type="button" className="btn" onClick={copyTableToClipboard} aria-live="polite">
+                {copied ? <Check size={15} strokeWidth={1.75} aria-hidden="true" className="text-[var(--color-success)]" /> : <Copy size={15} strokeWidth={1.75} aria-hidden="true" />}
+                {copied ? 'Copiado!' : 'Copiar Tabela'}
+              </button>
+              <button type="button" className="btn" onClick={exportCSV}>
+                <Download size={15} strokeWidth={1.75} aria-hidden="true" />
+                Exportar CSV
+              </button>
+              <button
+                type="button"
+                className={`btn btn--danger${armed ? ' btn--armed' : ''}`}
+                onClick={clearData}
+                aria-live="polite"
+              >
+                <Trash2 size={15} strokeWidth={1.75} aria-hidden="true" />
+                {armed ? 'Confirmar limpar?' : `Limpar (${tableData.length} registros)`}
+              </button>
+            </>
+          )}
+        </div>
       </div>
 
-      <div className="flex items-center gap-3 mb-6">
-        <Button
-          variant="contained"
-          component="label"
-          startIcon={<UploadIcon size={16} />}
-        >
-          Carregar XML
-          <input type="file" accept=".xml" hidden onChange={handleFileChange} />
-        </Button>
-        {tableData.length > 0 && (
-          <>
-            <Button
-              variant="outlined"
-              startIcon={copied ? <Check size={16} /> : <Copy size={16} />}
-              onClick={copyTableToClipboard}
-              color={copied ? 'success' : 'primary'}
-            >
-              {copied ? 'Copiado!' : 'Copiar Tabela'}
-            </Button>
-            <Button
-              variant="outlined"
-              startIcon={<Download size={16} />}
-              onClick={exportCSV}
-            >
-              Exportar CSV
-            </Button>
-            <Button
-              variant="outlined"
-              color="error"
-              startIcon={<Trash2 size={16} />}
-              onClick={clearData}
-            >
-              Limpar ({tableData.length} registros)
-            </Button>
-          </>
-        )}
-      </div>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".xml"
+        className="absolute w-px h-px overflow-hidden whitespace-nowrap"
+        onChange={handleFileChange}
+        aria-label="Selecionar arquivo XML"
+        tabIndex={-1}
+      />
+
+      {info && (
+        <p className="notice notice--quiet mt-4" role="status">{info}</p>
+      )}
+      {error && (
+        <p className="notice mt-4" role="alert">{error}</p>
+      )}
 
       {tableData.length > 0 ? (
-        <div className="bg-white rounded-xl border border-[var(--color-border)] overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
+        <section className="sheet" aria-label="Registros da remessa">
+          <div className="table-scroll">
+            <table className="ledger">
               <thead>
-                <tr className="bg-slate-50">
+                <tr>
                   {COLUMNS.map(({ key, label }) => (
-                    <th key={key} className="px-3 py-2.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap border-b border-slate-200">
+                    <th key={key} scope="col" className={NUM_COLUMNS.has(key) ? 'num' : undefined}>
                       {label}
                     </th>
                   ))}
@@ -250,9 +349,9 @@ export default function FileUploadTable() {
               </thead>
               <tbody>
                 {tableData.map((row, i) => (
-                  <tr key={i} className="hover:bg-slate-50 transition-colors">
+                  <tr key={i}>
                     {COLUMNS.map(({ key }) => (
-                      <td key={key} className="px-3 py-2 text-sm text-slate-700 whitespace-nowrap border-b border-slate-100">
+                      <td key={key} className={NUM_COLUMNS.has(key) ? 'num' : undefined}>
                         {row[key] ?? ''}
                       </td>
                     ))}
@@ -261,19 +360,34 @@ export default function FileUploadTable() {
               </tbody>
             </table>
           </div>
-          <div className="px-3 py-2.5 bg-slate-50 border-t border-slate-200 text-xs text-slate-500">
-            {tableData.length} registro{tableData.length !== 1 ? 's' : ''}
+          <div className="sheet-foot sheet-foot--split">
+            <span>
+              <span className="num">{tableData.length}</span> registro{tableData.length !== 1 ? 's' : ''}
+              {fileNames.length > 0 && (
+                <span className="text-[var(--color-muted)]"> · {fileNames.join(', ')}</span>
+              )}
+            </span>
+            <span className="num">Σ emolumentos {fmtEmolumentos}</span>
           </div>
-        </div>
+        </section>
       ) : (
-        <div className="flex flex-col items-center justify-center py-20 px-4 rounded-xl border-2 border-dashed border-slate-300 bg-white">
-          <FileSpreadsheet size={40} className="text-slate-300 mb-4" strokeWidth={1.5} />
-          <Typography variant="h6" color="text.secondary" sx={{ mb: 0.5 }}>
+        <div
+          onClick={() => fileInputRef.current?.click()}
+          onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
+          onDragLeave={() => setDrag(false)}
+          onDrop={handleDrop}
+          role="button"
+          tabIndex={0}
+          aria-label="Selecionar arquivo XML de remessa"
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInputRef.current?.click(); } }}
+          className={`dropzone cursor-pointer ${drag ? 'dropzone--drag' : ''}`}
+        >
+          <p className="font-[var(--font-body)] font-medium text-[var(--color-ink)] text-[var(--text-md)] m-0">
             Nenhum arquivo carregado
-          </Typography>
-          <Typography variant="body2" color="text.disabled">
-            Clique em &ldquo;Carregar XML&rdquo; para selecionar um arquivo
-          </Typography>
+          </p>
+          <p className="m-0 text-[var(--text-sm)] text-[var(--color-muted)]">
+            Arraste o XML aqui ou clique para selecionar
+          </p>
         </div>
       )}
     </div>
