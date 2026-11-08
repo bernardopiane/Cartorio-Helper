@@ -19,11 +19,22 @@ export default function ConsultaCRM() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-[var(--color-ink)] text-[var(--text-display)]">Consulta CRM</h1>
-        <p className="mt-1 text-[var(--text-sm)] text-[var(--color-muted)]">
-          Consulte médicos no portal do CREMERJ
-        </p>
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+        <div className="max-w-[52ch]">
+          <p className="text-[var(--text-xs)] font-[var(--font-outlier)] tracking-[0.08em] uppercase text-[var(--color-muted)] m-0">
+            Módulo CRM / <span className="text-[var(--color-accent)]">Consulta Externa</span> / CREMERJ
+          </p>
+          <h1 className="mt-1 text-[var(--color-ink)] text-[var(--text-display)]! max-w-none">
+            Consulta CRM / Médicos
+          </h1>
+          <p className="mt-1 text-[var(--text-sm)] text-[var(--color-muted)]">
+            Valide CRM de médicos atestantes de óbito e declarações de nascido vivo
+            junto ao portal do Conselho Regional de Medicina do Rio de Janeiro.
+          </p>
+        </div>
+        <span className={`pill ${online ? 'pill--success' : 'pill--error'}`}>
+          {online ? 'Conectado' : 'Sem conexão'}
+        </span>
       </div>
 
       {!online && (

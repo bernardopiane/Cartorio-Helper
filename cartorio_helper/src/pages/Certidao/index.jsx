@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from "react";
-import { RotateCcw } from 'lucide-react';
+import { RotateCcw, FileBadge2 } from 'lucide-react';
 import * as pdfjsLib from 'pdfjs-dist';
 import { loadState, saveState } from "../../utils/storage.js";
 import {
@@ -80,11 +80,19 @@ export default function CertidaoExtractor() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-[var(--color-ink)] text-[var(--text-display)]">Leitor de Certidões</h1>
-        <p className="mt-1 text-[var(--text-sm)] text-[var(--color-muted)]">
-          Extraia dados de certidões de nascimento, casamento e óbito em PDF
-        </p>
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+        <div className="max-w-[52ch]">
+          <p className="text-[var(--text-xs)] font-[var(--font-outlier)] tracking-[0.08em] uppercase text-[var(--color-muted)] m-0">
+            Módulo RCPN / <span className="text-[var(--color-accent)]">Extração de Certidões</span> / OCR Local
+          </p>
+          <h1 className="mt-1 text-[var(--color-ink)] text-[var(--text-display)]! max-w-none">
+            Leitor de Certidões PDF
+          </h1>
+          <p className="mt-1 text-[var(--text-sm)] text-[var(--color-muted)]">
+            Extraia dados de certidões de nascimento, casamento e óbito em PDF, com
+            isolamento estruturado de livro, folha, termo e filiação.
+          </p>
+        </div>
       </div>
 
       <input
@@ -119,7 +127,13 @@ export default function CertidaoExtractor() {
             </div>
           ) : (
             <>
-              <p className="font-[var(--font-body)] font-medium text-[var(--color-ink)] text-[var(--text-md)] m-0">
+              <span
+                aria-hidden="true"
+                className="w-12 h-12 grid place-items-center rounded-xl bg-[color-mix(in_oklab,var(--color-accent)_9%,var(--color-sheet))] mt-1"
+              >
+                <FileBadge2 size={22} strokeWidth={1.6} className="text-[var(--color-accent)]" />
+              </span>
+              <p className="font-[var(--font-display)] font-semibold text-[var(--color-ink)] text-[var(--text-md)] m-0 mt-1">
                 Selecionar certidão em PDF
               </p>
               <p className="m-0 text-[var(--text-sm)] text-[var(--color-muted)]">
