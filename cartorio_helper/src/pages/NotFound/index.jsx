@@ -13,13 +13,13 @@ export default function NotFound() {
         >
           <Compass size={22} strokeWidth={1.6} className="text-[var(--color-accent)]" />
         </span>
-        <p aria-hidden="true" className="m-0 mt-4 font-[var(--font-outlier)] text-[var(--text-xs)] tracking-[0.08em] uppercase text-[var(--color-muted)]">
+        <p aria-hidden="true" className="m-0 mt-4 font-[var(--font-outlier)] text-[length:var(--text-xs)] tracking-[0.08em] uppercase text-[var(--color-muted)]">
           Erro de rota · 404
         </p>
-        <h1 className="mt-1 font-[var(--font-display)] font-semibold text-[var(--text-lg)] text-[var(--color-ink)] max-w-none">
+        <h1 className="mt-1 font-[var(--font-display)] font-semibold text-[length:var(--text-lg)] text-[var(--color-ink)] max-w-none">
           Página não encontrada
         </h1>
-        <p className="mt-1 mb-5 text-[var(--text-sm)] text-[var(--color-muted)] max-w-[38ch]">
+        <p className="mt-1 mb-5 text-[length:var(--text-sm)] text-[var(--color-muted)] max-w-[38ch]">
           A ferramenta que você está procurando não existe ou foi movida para
           outra comarca do menu.
         </p>

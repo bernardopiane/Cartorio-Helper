@@ -82,13 +82,13 @@ export default function CertidaoExtractor() {
     <div>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div className="max-w-[52ch]">
-          <p className="text-[var(--text-xs)] font-[var(--font-outlier)] tracking-[0.08em] uppercase text-[var(--color-muted)] m-0">
+          <p className="text-[length:var(--text-xs)] font-[var(--font-outlier)] tracking-[0.08em] uppercase text-[var(--color-muted)] m-0">
             Módulo RCPN / <span className="text-[var(--color-accent)]">Extração de Certidões</span> / OCR Local
           </p>
-          <h1 className="mt-1 text-[var(--color-ink)] text-[var(--text-display)]! max-w-none">
+          <h1 className="mt-1 text-[var(--color-ink)] text-[length:var(--text-display)]! max-w-none">
             Leitor de Certidões PDF
           </h1>
-          <p className="mt-1 text-[var(--text-sm)] text-[var(--color-muted)]">
+          <p className="mt-1 text-[length:var(--text-sm)] text-[var(--color-muted)]">
             Extraia dados de certidões de nascimento, casamento e óbito em PDF, com
             isolamento estruturado de livro, folha, termo e filiação.
           </p>
@@ -133,13 +133,13 @@ export default function CertidaoExtractor() {
               >
                 <FileBadge2 size={22} strokeWidth={1.6} className="text-[var(--color-accent)]" />
               </span>
-              <p className="font-[var(--font-display)] font-semibold text-[var(--color-ink)] text-[var(--text-md)] m-0 mt-1">
+              <p className="font-[var(--font-display)] font-semibold text-[var(--color-ink)] text-[length:var(--text-md)] m-0 mt-1">
                 Selecionar certidão em PDF
               </p>
-              <p className="m-0 text-[var(--text-sm)] text-[var(--color-muted)]">
+              <p className="m-0 text-[length:var(--text-sm)] text-[var(--color-muted)]">
                 Arraste o arquivo aqui ou clique para selecionar
               </p>
-              <p className="m-0 mt-1 text-[var(--text-xs)] text-[var(--color-muted)]">
+              <p className="m-0 mt-1 text-[length:var(--text-xs)] text-[var(--color-muted)]">
                 Nascimento, casamento e óbito
               </p>
             </>
@@ -159,10 +159,10 @@ export default function CertidaoExtractor() {
         <section className="sheet" aria-label="Dados extraídos da certidão">
           <div className="sheet-head">
             <div className="min-w-0">
-              <h2 className="text-[var(--text-title)] text-[var(--color-ink)] overflow-hidden text-ellipsis whitespace-nowrap">
+              <h2 className="text-[length:var(--text-title)] text-[var(--color-ink)] overflow-hidden text-ellipsis whitespace-nowrap">
                 {headerName || '—'}
               </h2>
-              <p className="m-0 text-[var(--text-xs)] text-[var(--color-muted)] font-[var(--font-outlier)]">
+              <p className="m-0 text-[length:var(--text-xs)] text-[var(--color-muted)] font-[var(--font-outlier)]">
                 {fileName}
               </p>
             </div>

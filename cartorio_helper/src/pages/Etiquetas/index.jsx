@@ -18,13 +18,13 @@ function StepCard({ step, title, sub, chip, chipTone = 'pill--error', children, 
       <div className="flex items-center gap-3 px-[var(--space-lg)] py-4 border-b border-[var(--color-rule)]">
         <span
           aria-hidden="true"
-          className="w-7 h-7 shrink-0 grid place-items-center rounded-md bg-[var(--color-ink)] text-[var(--color-sheet)] font-[var(--font-outlier)] text-[var(--text-xs)] font-medium"
+          className="w-7 h-7 shrink-0 grid place-items-center rounded-md bg-[var(--color-ink)] text-[var(--color-sheet)] font-[var(--font-outlier)] text-[length:var(--text-xs)] font-medium"
         >
           {step}
         </span>
         <div className="min-w-0 flex-1">
-          <h2 id={`etq-titulo-${step}`} className="text-[var(--text-md)] text-[var(--color-ink)] max-w-none text-wrap">{title}</h2>
-          <p className="m-0 text-[var(--text-xs)] text-[var(--color-muted)]">{sub}</p>
+          <h2 id={`etq-titulo-${step}`} className="text-[length:var(--text-md)] text-[var(--color-ink)] max-w-none text-wrap">{title}</h2>
+          <p className="m-0 text-[length:var(--text-xs)] text-[var(--color-muted)]">{sub}</p>
         </div>
         {chip && <span className={`pill ${chipTone}`}>{chip}</span>}
       </div>
@@ -126,13 +126,13 @@ export default function Etiquetas() {
     <div>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div className="max-w-[56ch]">
-          <p className="text-[var(--text-xs)] font-[var(--font-outlier)] tracking-[0.08em] uppercase text-[var(--color-muted)] m-0">
+          <p className="text-[length:var(--text-xs)] font-[var(--font-outlier)] tracking-[0.08em] uppercase text-[var(--color-muted)] m-0">
             Módulo RCPN / <span className="text-[var(--color-accent)]">Etiquetas &amp; Averbação</span> / Provimento CNJ 182/2024
           </p>
-          <h1 className="mt-1 text-[var(--color-ink)] text-[var(--text-display)]! max-w-none">
+          <h1 className="mt-1 text-[var(--color-ink)] text-[length:var(--text-display)]! max-w-none">
             Gerador de Etiquetas &amp; Averbação de CPF
           </h1>
-          <p className="mt-1 text-[var(--text-sm)] text-[var(--color-muted)]">
+          <p className="mt-1 text-[length:var(--text-sm)] text-[var(--color-muted)]">
             Gere termos padronizados de averbação de CPF para registros civis em estrita
             conformidade com o Provimento nº 149/2023 alterado pelo Provimento nº 182/2024 do CNJ.
           </p>
@@ -216,7 +216,7 @@ export default function Etiquetas() {
               </div>
               <div className="min-w-0">
                 <label htmlFor="etq-termo" className="field-label">
-                  Termo <span className="ml-[var(--space-xs)] text-[var(--text-xs)] font-normal text-[var(--color-muted)]">Assento</span>
+                  Termo <span className="ml-[var(--space-xs)] text-[length:var(--text-xs)] font-normal text-[var(--color-muted)]">Assento</span>
                 </label>
                 <div className="relative">
                   <Hash size={14} strokeWidth={1.6} aria-hidden="true" className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--color-muted)] pointer-events-none" />
@@ -234,7 +234,7 @@ export default function Etiquetas() {
             step="03" title="Qualificação dos Registrados" sub="Titularidade civil e cadastro na Receita Federal"
             footer={
               <div className="flex flex-wrap items-center justify-between gap-2 px-[var(--space-lg)] py-3 border-t border-[var(--color-rule)]">
-                <span className="flex items-center gap-1.5 text-[var(--text-xs)] text-[var(--color-muted)]">
+                <span className="flex items-center gap-1.5 text-[length:var(--text-xs)] text-[var(--color-muted)]">
                   <Info size={13} strokeWidth={1.6} aria-hidden="true" />
                   Preenchimento auditável do formulário
                 </span>
@@ -247,7 +247,7 @@ export default function Etiquetas() {
           >
             {/* 1º registrado */}
             <div className="rounded-[var(--radius-field)] bg-[var(--color-paper)] p-[var(--space-md)]">
-              <p className="flex items-center gap-1.5 m-0 mb-[var(--space-xs)] text-[var(--text-sm)] font-semibold text-[var(--color-ink)]">
+              <p className="flex items-center gap-1.5 m-0 mb-[var(--space-xs)] text-[length:var(--text-sm)] font-semibold text-[var(--color-ink)]">
                 <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />
                 1º Registrado (Titular Principal)
               </p>
@@ -285,7 +285,7 @@ export default function Etiquetas() {
                 onClick={() => setAbrir2((v) => !v)}
               >
                 <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-[var(--color-rule-2)]" />
-                <span className="text-[var(--text-sm)] font-medium text-[var(--color-ink-2)]">
+                <span className="text-[length:var(--text-sm)] font-medium text-[var(--color-ink-2)]">
                   2º Registrado (Opcional / Cônjuge)
                 </span>
                 <span className="pill ml-1">{naoAverbacao ? 'Indisponível' : 'Livro B'}</span>
@@ -332,7 +332,7 @@ export default function Etiquetas() {
                   onChange={(e) => setNaoAverbacao(e.target.checked)}
                   className="m-0 w-4 h-4 shrink-0 cursor-pointer accent-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-[var(--color-focus)] focus-visible:outline-offset-2"
                 />
-                <span className="text-[var(--text-sm)] font-medium text-[var(--color-ink-2)]">
+                <span className="text-[length:var(--text-sm)] font-medium text-[var(--color-ink-2)]">
                   Não foi possível averbar o CPF (adicionar justificativa formal)
                 </span>
               </label>
@@ -358,16 +358,16 @@ export default function Etiquetas() {
               <div className="flex items-start gap-2.5">
                 <Stamp size={18} strokeWidth={1.6} aria-hidden="true" className="text-[var(--color-accent)] shrink-0 mt-0.5" />
                 <div className="min-w-0 flex-1">
-                  <h2 className="text-[var(--text-md)] text-[var(--color-ink)] max-w-none text-wrap">
+                  <h2 className="text-[length:var(--text-md)] text-[var(--color-ink)] max-w-none text-wrap">
                     Minuta da Averbação Formatada
                   </h2>
-                  <p className="m-0 text-[var(--text-xs)] text-[var(--color-muted)] mt-0.5">
+                  <p className="m-0 text-[length:var(--text-xs)] text-[var(--color-muted)] mt-0.5">
                     Padrão ABNT / RCPN
                   </p>
                 </div>
                 <span className="pill pill--success">Validação OK</span>
               </div>
-              <p className="m-0 mt-2 text-[var(--text-xs)] text-[var(--color-muted)]">
+              <p className="m-0 mt-2 text-[length:var(--text-xs)] text-[var(--color-muted)]">
                 Conforme Provisimentos CNJ 149/2023 &amp; 182/2024
               </p>
             </div>
@@ -375,7 +375,7 @@ export default function Etiquetas() {
             <div className="px-[var(--space-md)] pb-[var(--space-md)]">
               <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1 mb-[var(--space-2xs)] px-1">
                 {!canCopy && (
-                  <span className="text-[var(--text-xs)] text-[var(--color-muted)] min-w-0">
+                  <span className="text-[length:var(--text-xs)] text-[var(--color-muted)] min-w-0">
                     {copyHint}
                   </span>
                 )}
@@ -402,7 +402,7 @@ export default function Etiquetas() {
                     Margem de corte térmica
                   </p>
                   <textarea
-                    className="w-full bg-transparent border-0 outline-none p-0 m-0 font-[var(--font-outlier)] text-[var(--text-sm)] leading-[1.7] text-[var(--color-ink)] resize-none min-h-52"
+                    className="w-full bg-transparent border-0 outline-none p-0 m-0 font-[var(--font-outlier)] text-[length:var(--text-sm)] leading-[1.7] text-[var(--color-ink)] resize-none min-h-52"
                     readOnly
                     rows={8}
                     aria-label="Texto de averbação gerado"
@@ -414,11 +414,11 @@ export default function Etiquetas() {
             </div>
 
             <div className="flex items-center justify-between gap-2 px-[var(--space-lg)] py-3 border-t border-[var(--color-rule)]">
-              <span className="flex items-center gap-1.5 text-[var(--text-xs)] text-[var(--color-muted)] min-w-0">
+              <span className="flex items-center gap-1.5 text-[length:var(--text-xs)] text-[var(--color-muted)] min-w-0">
                 <Lock size={12} strokeWidth={1.6} aria-hidden="true" className="shrink-0" />
                 Autenticado via Provimento CNJ 182/2024
               </span>
-              <span className="text-[var(--text-xs)] font-[var(--font-outlier)] num text-[var(--color-muted)]">Versão 2.4</span>
+              <span className="text-[length:var(--text-xs)] font-[var(--font-outlier)] num text-[var(--color-muted)]">Versão 2.4</span>
             </div>
           </section>
         </aside>

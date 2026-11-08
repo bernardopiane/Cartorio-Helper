@@ -24,11 +24,11 @@ export default class ErrorBoundary extends Component {
       return (
         <div className="flex items-center justify-center h-full p-8">
           <div className="max-w-md w-full">
-            <h1 className="text-[var(--color-ink)] text-[var(--text-display)] flex items-center gap-2">
+            <h1 className="text-[var(--color-ink)] text-[length:var(--text-display)] flex items-center gap-2">
               <AlertTriangle size={20} strokeWidth={1.75} aria-hidden="true" className="text-[var(--color-error)]" />
               Algo deu errado
             </h1>
-            <p className="mt-1 text-[var(--text-sm)] text-[var(--color-muted)]">
+            <p className="mt-1 text-[length:var(--text-sm)] text-[var(--color-muted)]">
               Ocorreu um erro inesperado nesta tela.
             </p>
             <p className="notice mt-4">

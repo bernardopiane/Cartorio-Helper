@@ -305,14 +305,14 @@ export default function FileUploadTable() {
     <div>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div className="max-w-[52ch]">
-          <p className="flex items-center gap-2 text-[var(--text-xs)] font-[var(--font-outlier)] tracking-[0.08em] uppercase text-[var(--color-muted)] m-0">
+          <p className="flex items-center gap-2 text-[length:var(--text-xs)] font-[var(--font-outlier)] tracking-[0.08em] uppercase text-[var(--color-muted)] m-0">
             <CircleCheck size={13} strokeWidth={1.8} aria-hidden="true" className="text-[var(--color-accent)]" />
             Módulo de Validação &amp; Auditoria de Livros
           </p>
-          <h1 className="mt-1 text-[var(--color-ink)] text-[var(--text-display)]! max-w-none">
+          <h1 className="mt-1 text-[var(--color-ink)] text-[length:var(--text-display)]! max-w-none">
             Upload e Processamento de Remessas XML
           </h1>
-          <p className="mt-1 text-[var(--text-sm)] text-[var(--color-muted)]">
+          <p className="mt-1 text-[length:var(--text-sm)] text-[var(--color-muted)]">
             Carregue arquivos XML de remessa para auditar registros, calcular emolumentos e
             gerar relatórios notariais oficiais.
           </p>
@@ -442,10 +442,10 @@ export default function FileUploadTable() {
           >
             <UploadIcon size={22} strokeWidth={1.6} className="text-[var(--color-accent)]" />
           </span>
-          <p className="font-[var(--font-display)] font-semibold text-[var(--color-ink)] text-[var(--text-md)] m-0 mt-1">
+          <p className="font-[var(--font-display)] font-semibold text-[var(--color-ink)] text-[length:var(--text-md)] m-0 mt-1">
             Selecionar arquivo XML de remessa
           </p>
-          <p className="m-0 text-[var(--text-sm)] text-[var(--color-muted)]">
+          <p className="m-0 text-[length:var(--text-sm)] text-[var(--color-muted)]">
             Arraste o XML aqui ou clique para selecionar
           </p>
         </div>

@@ -24,22 +24,22 @@ export default function Sidebar() {
         <div className="flex items-center gap-2.5">
           <span
             aria-hidden="true"
-            className="w-8 h-8 shrink-0 grid place-items-center rounded-lg bg-[var(--color-sheet)] text-[var(--color-sidebar)] font-[var(--font-outlier)] text-[var(--text-xs)] font-medium"
+            className="w-8 h-8 shrink-0 grid place-items-center rounded-lg bg-[var(--color-sheet)] text-[var(--color-sidebar)] font-[var(--font-outlier)] text-[length:var(--text-xs)] font-medium"
           >
             DIRC
           </span>
           <div className="min-w-0">
-            <h1 className="sidebar-title text-[var(--color-sidebar-ink)] font-[var(--font-display)] text-[var(--text-md)] font-semibold tracking-[-0.01em] leading-tight">
+            <h1 className="sidebar-title text-[var(--color-sidebar-ink)] font-[var(--font-display)] text-[length:var(--text-md)] font-semibold tracking-[-0.01em] leading-tight">
               Cartório Helper
             </h1>
-            <p className="sidebar-eyebrow text-[color-mix(in_oklab,var(--color-sidebar-ink)_55%,transparent)] text-[var(--text-xs)] font-[var(--font-outlier)] tracking-[0.08em] uppercase mt-0.5">
+            <p className="sidebar-eyebrow text-[color-mix(in_oklab,var(--color-sidebar-ink)_55%,transparent)] text-[length:var(--text-xs)] font-[var(--font-outlier)] tracking-[0.08em] uppercase mt-0.5">
               Registro Civil &amp; Notarial
             </p>
           </div>
         </div>
       </div>
 
-      <p className="sidebar-eyebrow px-5 pt-5 pb-2 text-[color-mix(in_oklab,var(--color-sidebar-ink)_45%,transparent)] text-[var(--text-xs)] font-[var(--font-outlier)] tracking-[0.1em] uppercase">
+      <p className="sidebar-eyebrow px-5 pt-5 pb-2 text-[color-mix(in_oklab,var(--color-sidebar-ink)_45%,transparent)] text-[length:var(--text-xs)] font-[var(--font-outlier)] tracking-[0.1em] uppercase">
         Módulos Notariais
       </p>
 
@@ -55,7 +55,7 @@ export default function Sidebar() {
               aria-current={active ? 'page' : undefined}
               className={`
                 sidebar-label-wrap w-full flex items-center gap-2.5 px-2.5 py-2 text-left cursor-pointer border-none rounded-lg
-                text-[var(--text-sm)] font-[var(--font-display)] font-medium
+                text-[length:var(--text-sm)] font-[var(--font-display)] font-medium
                 transition-colors duration-150 mb-0.5
                 ${active
                   ? 'bg-[var(--color-sidebar-2)] text-[var(--color-sidebar-ink)] font-semibold'
@@ -76,7 +76,7 @@ export default function Sidebar() {
       </nav>
 
       <div className="sidebar-foot px-5 py-3 border-t border-[color-mix(in_oklab,var(--color-sidebar-ink)_14%,transparent)]">
-        <p className="text-[color-mix(in_oklab,var(--color-sidebar-ink)_45%,transparent)] text-[var(--text-xs)] font-[var(--font-outlier)] num">v0.1.0</p>
+        <p className="text-[color-mix(in_oklab,var(--color-sidebar-ink)_45%,transparent)] text-[length:var(--text-xs)] font-[var(--font-outlier)] num">v0.1.0</p>
       </div>
     </aside>
   );

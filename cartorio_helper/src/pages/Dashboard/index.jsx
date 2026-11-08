@@ -45,7 +45,7 @@ export default function Dashboard() {
       <div className="mb-6 flex items-center justify-between gap-4 flex-wrap">
         <div className="flex items-center gap-3">
           <Grip size={20} strokeWidth={1.6} aria-hidden="true" className="text-[var(--color-accent)]" />
-          <h1 className="text-[var(--color-ink)] text-[var(--text-xl)]">Ferramentas Notariais Disponíveis</h1>
+          <h1 className="text-[var(--color-ink)] text-[length:var(--text-xl)]">Ferramentas Notariais Disponíveis</h1>
         </div>
         <span className="pill pill--info">{TOOLS.length} Módulos Homologados</span>
       </div>
@@ -72,8 +72,8 @@ export default function Dashboard() {
                 {chip && <span className="pill font-[var(--font-outlier)] !font-normal">{chip}</span>}
               </div>
 
-              <h2 className="mt-4 text-[var(--text-md)] text-[var(--color-ink)] max-w-none text-wrap">{label}</h2>
-              <p className="mt-2 text-[var(--text-sm)] leading-[1.55] text-[var(--color-muted)]">{desc}</p>
+              <h2 className="mt-4 text-[length:var(--text-md)] text-[var(--color-ink)] max-w-none text-wrap">{label}</h2>
+              <p className="mt-2 text-[length:var(--text-sm)] leading-[1.55] text-[var(--color-muted)]">{desc}</p>
 
               <div className="mt-auto pt-5 flex items-center gap-2">
                 <kbd className="pill !bg-[var(--color-paper-2)] font-[var(--font-outlier)] !font-normal">{comboLabel(alt)}</kbd>
@@ -93,21 +93,21 @@ export default function Dashboard() {
           {/* best-practices card: the dark tile closes the grid */}
           <li className="rounded-[var(--radius-card)] bg-[var(--color-sidebar)] p-6 pb-5 flex flex-col shadow-[var(--shadow-card)]">
             <div className="flex items-start justify-between gap-2">
-              <p className="text-[var(--text-xs)] font-[var(--font-outlier)] tracking-[0.1em] uppercase text-[color-mix(in_oklab,var(--color-sheet)_75%,var(--color-sidebar-ink-2))]">
+              <p className="text-[length:var(--text-xs)] font-[var(--font-outlier)] tracking-[0.1em] uppercase text-[color-mix(in_oklab,var(--color-sheet)_75%,var(--color-sidebar-ink-2))]">
                 Boas Práticas
               </p>
               <Settings size={18} strokeWidth={1.5} aria-hidden="true" className="text-[color-mix(in_oklab,var(--color-sheet)_80%,var(--color-sidebar-ink-2))]" />
             </div>
-            <h2 className="mt-3 text-[var(--text-md)] text-[var(--color-sidebar-ink)] max-w-none">Conformidade e Selagem</h2>
-            <p className="mt-2 text-[var(--text-sm)] leading-[1.55] text-[color-mix(in_oklab,var(--color-sidebar-ink-2)_78%,var(--color-sidebar-ink))]">
+            <h2 className="mt-3 text-[length:var(--text-md)] text-[var(--color-sidebar-ink)] max-w-none">Conformidade e Selagem</h2>
+            <p className="mt-2 text-[length:var(--text-sm)] leading-[1.55] text-[color-mix(in_oklab,var(--color-sidebar-ink-2)_78%,var(--color-sidebar-ink))]">
               Antes de despachar o lote de averbação, confira a assinatura digital ICP-Brasil e a correção do livro A/B com a comarca de origem.
             </p>
             <div className="mt-auto pt-6 flex items-center justify-between gap-3 flex-wrap">
-              <span className="font-[var(--font-outlier)] text-[var(--text-xs)] text-[color-mix(in_oklab,var(--color-sidebar-ink)_85%,transparent)]">
+              <span className="font-[var(--font-outlier)] text-[length:var(--text-xs)] text-[color-mix(in_oklab,var(--color-sidebar-ink)_85%,transparent)]">
                 Cartilha Operacional 2026
               </span>
               <a
-                className="text-[var(--text-xs)] font-semibold text-[var(--color-sidebar-ink)] underline underline-offset-2 decoration-[var(--color-rule-2)]"
+                className="text-[length:var(--text-xs)] font-semibold text-[var(--color-sidebar-ink)] underline underline-offset-2 decoration-[var(--color-rule-2)]"
                 href="#/dashboard"
                 onClick={(e) => e.preventDefault()}
               >
@@ -129,8 +129,8 @@ export default function Dashboard() {
           <Keyboard size={16} strokeWidth={1.6} className="text-[var(--color-ink-2)]" />
         </span>
         <div className="min-w-0">
-          <p className="text-[var(--text-sm)] font-semibold text-[var(--color-ink)]">Navegação Expressa por Teclado</p>
-          <p className="text-[var(--text-xs)] text-[var(--color-muted)]">
+          <p className="text-[length:var(--text-sm)] font-semibold text-[var(--color-ink)]">Navegação Expressa por Teclado</p>
+          <p className="text-[length:var(--text-xs)] text-[var(--color-muted)]">
             Agilize a rotina registral — os atalhos funcionam em qualquer tela da aplicação.
           </p>
         </div>
@@ -138,7 +138,7 @@ export default function Dashboard() {
           {SHORTCUTS.slice(0, 4).map((s) => (
             <span key={s.combo + s.label} className="flex items-center gap-1.5">
               <kbd className="pill font-[var(--font-outlier)] !font-normal">{s.combo}</kbd>
-              <span className="text-[var(--text-xs)] text-[var(--color-muted)] hidden lg:inline">{s.label}</span>
+              <span className="text-[length:var(--text-xs)] text-[var(--color-muted)] hidden lg:inline">{s.label}</span>
             </span>
           ))}
           <button type="button" className="btn btn--sm" aria-label="Abrir lista de atalhos no menu superior">

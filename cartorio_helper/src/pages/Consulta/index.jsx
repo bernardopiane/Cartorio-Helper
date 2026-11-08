@@ -21,13 +21,13 @@ export default function ConsultaCRM() {
     <div>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div className="max-w-[52ch]">
-          <p className="text-[var(--text-xs)] font-[var(--font-outlier)] tracking-[0.08em] uppercase text-[var(--color-muted)] m-0">
+          <p className="text-[length:var(--text-xs)] font-[var(--font-outlier)] tracking-[0.08em] uppercase text-[var(--color-muted)] m-0">
             Módulo CRM / <span className="text-[var(--color-accent)]">Consulta Externa</span> / CREMERJ
           </p>
-          <h1 className="mt-1 text-[var(--color-ink)] text-[var(--text-display)]! max-w-none">
+          <h1 className="mt-1 text-[var(--color-ink)] text-[length:var(--text-display)]! max-w-none">
             Consulta CRM / Médicos
           </h1>
-          <p className="mt-1 text-[var(--text-sm)] text-[var(--color-muted)]">
+          <p className="mt-1 text-[length:var(--text-sm)] text-[var(--color-muted)]">
             Valide CRM de médicos atestantes de óbito e declarações de nascido vivo
             junto ao portal do Conselho Regional de Medicina do Rio de Janeiro.
           </p>
@@ -45,14 +45,14 @@ export default function ConsultaCRM() {
 
       <div className="sheet">
         <div className="sheet-head">
-          <span className="text-[var(--text-xs)] text-[var(--color-muted)] font-[var(--font-outlier)]">
+          <span className="text-[length:var(--text-xs)] text-[var(--color-muted)] font-[var(--font-outlier)]">
             portal.cremerj.org.br/busca-medicos
           </span>
           <a
             href="https://portal.cremerj.org.br/busca-medicos"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-[var(--space-2xs)] text-[var(--text-xs)] text-[var(--color-ink-2)] no-underline hover:underline"
+            className="inline-flex items-center gap-[var(--space-2xs)] text-[length:var(--text-xs)] text-[var(--color-ink-2)] no-underline hover:underline"
           >
             <ExternalLink size={13} strokeWidth={1.5} aria-hidden="true" />
             Abrir no portal

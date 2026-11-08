@@ -30,7 +30,7 @@ export default function TopBar() {
       >
         CH
       </span>
-      <p className="text-[var(--text-md)] font-[var(--font-display)] font-semibold text-[var(--color-ink)] tracking-[-0.01em]">
+      <p className="text-[length:var(--text-md)] font-[var(--font-display)] font-semibold text-[var(--color-ink)] tracking-[-0.01em]">
         Cartório Helper
       </p>
 
@@ -52,13 +52,13 @@ export default function TopBar() {
             aria-label="Navegação expressa por teclado"
             className="absolute right-0 top-[calc(100%+8px)] z-[var(--z-dropdown)] w-72 rounded-[var(--radius-card)] bg-[var(--color-sheet)] shadow-[0_2px_6px_rgb(20_22_52/0.08),0_20px_40px_-16px_rgb(20_22_52/0.25)] border border-[var(--color-rule)] p-4"
           >
-            <p className="text-[var(--text-xs)] font-[var(--font-outlier)] tracking-[0.08em] uppercase text-[var(--color-muted)] mb-2">
+            <p className="text-[length:var(--text-xs)] font-[var(--font-outlier)] tracking-[0.08em] uppercase text-[var(--color-muted)] mb-2">
               Navegação expressa
             </p>
             <ul className="divide-y divide-[var(--color-rule)]">
               {SHORTCUTS.map((s) => (
                 <li key={s.combo} className="flex items-center justify-between gap-3 py-1.5">
-                  <span className="text-[var(--text-sm)] text-[var(--color-ink-2)]">{s.label}</span>
+                  <span className="text-[length:var(--text-sm)] text-[var(--color-ink-2)]">{s.label}</span>
                   <kbd className="pill font-[var(--font-outlier)] num !font-normal">{s.combo}</kbd>
                 </li>
               ))}
