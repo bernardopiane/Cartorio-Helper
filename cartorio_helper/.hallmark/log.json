@@ -1,0 +1,19 @@
+[
+ {
+  "tool": "hallmark",
+  "mode": "redesign",
+  "depth": "full",
+  "scope": "app",
+  "project": "Cartório Helper",
+  "shape": "app screen, Electron toolbox with HashRouter shell",
+  "theme": "Almanac, deal 1/3, seed internal-records-office-desktop-toolbox-4cf6·6d314e84·2026-11-06·r0",
+  "axes": "slate paper hue 245, Hanken Grotesk display, Newsreader body, IBM Plex Mono tabular figures, one chart-magenta accent",
+  "nav": "light paper-2 side rail with magenta 2px active left-rule, folds to a 56px icon rail under 48rem",
+  "sections": "dashboard ledger, upload remessa ledger, formatter sheet, etiquetas averbação sheet, consulta webview sheet, certidão records register, 404 and error sheets",
+  "signature": "the remessa ledger table printed as a register sheet",
+  "prompt": "redesign the Cartório Helper internal civil-registry toolbox so it does not look AI-made",
+  "sweep": "0 FAIL 0 WARN 2 WAIVED on 39b dropzones, kept links 1/1 fields 5/13 handlers 29/29 headings 6/6",
+  "review": "finish review in fresh context, verdict fix, 6 findings, 6 resolved",
+  "date": "2026-11-06"
+ }
+]

@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-06",
+  "title": "Design System: Cartório Helper",
+  "extensions": {
+    "colorMeta": {
+      "tinta-de-selo": {
+        "role": "primary",
+        "displayName": "Tinta de Selo",
+        "canonical": "oklch(45% 0.180 350)",
+        "tonalRamp": ["oklch(15% 0.05 350)", "oklch(22% 0.08 350)", "oklch(30% 0.12 350)", "oklch(37% 0.16 350)", "oklch(45% 0.18 350)", "oklch(60% 0.15 350)", "oklch(78% 0.10 350)", "oklch(93% 0.045 350)"]
+      },
+      "tinta-de-selo-prensa": {
+        "role": "primary",
+        "displayName": "Tinta de Selo Prensa",
+        "canonical": "oklch(37% 0.160 350)",
+        "tonalRamp": ["oklch(15% 0.05 350)", "oklch(22% 0.08 350)", "oklch(30% 0.12 350)", "oklch(37% 0.16 350)", "oklch(45% 0.18 350)", "oklch(60% 0.15 350)", "oklch(78% 0.10 350)", "oklch(93% 0.045 350)"]
+      },
+      "tinta-de-selo-foco": {
+        "role": "primary",
+        "displayName": "Tinta de Selo Foco",
+        "canonical": "oklch(46% 0.190 350)",
+        "tonalRamp": ["oklch(15% 0.05 350)", "oklch(22% 0.08 350)", "oklch(30% 0.12 350)", "oklch(37% 0.16 350)", "oklch(45% 0.18 350)", "oklch(60% 0.15 350)", "oklch(78% 0.10 350)", "oklch(93% 0.045 350)"]
+      },
+      "tampa-do-selo": {
+        "role": "primary",
+        "displayName": "Tampa do Selo",
+        "canonical": "oklch(97% 0.006 245)",
+        "tonalRamp": ["oklch(15% 0.02 245)", "oklch(25% 0.018 245)", "oklch(35% 0.016 245)", "oklch(50% 0.014 245)", "oklch(65% 0.013 245)", "oklch(77% 0.012 245)", "oklch(84% 0.012 245)", "oklch(97% 0.006 245)"]
+      },
+      "papel-arquivo": {
+        "role": "neutral",
+        "displayName": "Papel Arquivo",
+        "canonical": "oklch(84% 0.012 245)",
+        "tonalRamp": ["oklch(15% 0.02 245)", "oklch(25% 0.018 245)", "oklch(35% 0.016 245)", "oklch(50% 0.014 245)", "oklch(65% 0.013 245)", "oklch(77% 0.012 245)", "oklch(84% 0.012 245)", "oklch(93.5% 0.008 245)"]
+      },
+      "papel-arquivo-2": {
+        "role": "neutral",
+        "displayName": "Papel Arquivo 2",
+        "canonical": "oklch(81% 0.012 245)",
+        "tonalRamp": ["oklch(15% 0.02 245)", "oklch(25% 0.018 245)", "oklch(35% 0.016 245)", "oklch(50% 0.014 245)", "oklch(65% 0.013 245)", "oklch(77% 0.012 245)", "oklch(84% 0.012 245)", "oklch(93.5% 0.008 245)"]
+      },
+      "papel-arquivo-3": {
+        "role": "neutral",
+        "displayName": "Papel Arquivo 3",
+        "canonical": "oklch(77% 0.012 245)",
+        "tonalRamp": ["oklch(15% 0.02 245)", "oklch(25% 0.018 245)", "oklch(35% 0.016 245)", "oklch(50% 0.014 245)", "oklch(65% 0.013 245)", "oklch(77% 0.012 245)", "oklch(84% 0.012 245)", "oklch(93.5% 0.008 245)"]
+      },
+      "folha": {
+        "role": "neutral",
+        "displayName": "Folha",
+        "canonical": "oklch(93.5% 0.008 245)",
+        "tonalRamp": ["oklch(15% 0.02 245)", "oklch(25% 0.018 245)", "oklch(35% 0.016 245)", "oklch(50% 0.014 245)", "oklch(65% 0.013 245)", "oklch(77% 0.012 245)", "oklch(84% 0.012 245)", "oklch(93.5% 0.008 245)"]
+      },
+      "tinta": {
+        "role": "neutral",
+        "displayName": "Tinta",
+        "canonical": "oklch(16% 0.020 245)",
+        "tonalRamp": ["oklch(15% 0.02 245)", "oklch(25% 0.018 245)", "oklch(35% 0.016 245)", "oklch(50% 0.014 245)", "oklch(65% 0.013 245)", "oklch(77% 0.012 245)", "oklch(84% 0.012 245)", "oklch(93.5% 0.008 245)"]
+      },
+      "tinta-suave": {
+        "role": "neutral",
+        "displayName": "Tinta Suave",
+        "canonical": "oklch(24% 0.018 245)",
+        "tonalRamp": ["oklch(15% 0.02 245)", "oklch(25% 0.018 245)", "oklch(35% 0.016 245)", "oklch(50% 0.014 245)", "oklch(65% 0.013 245)", "oklch(77% 0.012 245)", "oklch(84% 0.012 245)", "oklch(93.5% 0.008 245)"]
+      },
+      "tinta-morta": {
+        "role": "neutral",
+        "displayName": "Tinta Morta",
+        "canonical": "oklch(38% 0.016 245)",
+        "tonalRamp": ["oklch(15% 0.02 245)", "oklch(25% 0.018 245)", "oklch(35% 0.016 245)", "oklch(50% 0.014 245)", "oklch(65% 0.013 245)", "oklch(77% 0.012 245)", "oklch(84% 0.012 245)", "oklch(93.5% 0.008 245)"]
+      },
+      "pauta": {
+        "role": "neutral",
+        "displayName": "Pauta",
+        "canonical": "oklch(73% 0.013 240)",
+        "tonalRamp": ["oklch(15% 0.02 240)", "oklch(25% 0.018 240)", "oklch(35% 0.016 240)", "oklch(50% 0.014 240)", "oklch(65% 0.013 240)", "oklch(73% 0.013 240)", "oklch(84% 0.012 240)", "oklch(93.5% 0.008 240)"]
+      },
+      "pauta-firme": {
+        "role": "neutral",
+        "displayName": "Pauta Firme",
+        "canonical": "oklch(32% 0.018 240)",
+        "tonalRamp": ["oklch(15% 0.02 240)", "oklch(25% 0.018 240)", "oklch(32% 0.018 240)", "oklch(50% 0.014 240)", "oklch(65% 0.013 240)", "oklch(77% 0.012 240)", "oklch(84% 0.012 240)", "oklch(93.5% 0.008 240)"]
+      },
+      "vermelho-anulacao": {
+        "role": "state",
+        "displayName": "Vermelho Anulação",
+        "canonical": "oklch(52% 0.190 27)",
+        "tonalRamp": ["oklch(15% 0.06 27)", "oklch(24% 0.10 27)", "oklch(33% 0.15 27)", "oklch(42% 0.18 27)", "oklch(52% 0.19 27)", "oklch(65% 0.16 27)", "oklch(80% 0.10 27)", "oklch(94% 0.04 27)"]
+      },
+      "verde-registro": {
+        "role": "state",
+        "displayName": "Verde Registro",
+        "canonical": "oklch(50% 0.120 150)",
+        "tonalRamp": ["oklch(15% 0.04 150)", "oklch(23% 0.06 150)", "oklch(31% 0.09 150)", "oklch(40% 0.11 150)", "oklch(50% 0.12 150)", "oklch(63% 0.10 150)", "oklch(79% 0.07 150)", "oklch(94% 0.03 150)"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Título da página (h1). Peso 600, -0.02em, máx. 20ch — o app não tem hero." },
+      "section": { "displayName": "Section", "purpose": "Títulos de folha/sessão (h2), sempre dentro do cabeçalho da folha com dado-contexto à direita." },
+      "body": { "displayName": "Body", "purpose": "Prosa e descrições em Newsreader, máx. 65ch." },
+      "label": { "displayName": "Label", "purpose": "Rótulos de campo e headers de tabela — sentence case, untracked, Newsreader 500." },
+      "data": { "displayName": "Data", "purpose": "Valores de documento (mono tabular): processos, CPFs, contadores, versões, datas." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Easing padrão de estados (hover, foco, drag) — var(--ease-out)." },
+      { "name": "dur-micro", "value": "120ms", "purpose": "Transições de cor/fundo — var(--dur-micro)." },
+      { "name": "dur-short", "value": "220ms", "purpose": "Transições curtos de superfície — var(--dur-short)." },
+      { "name": "dur-long", "value": "420ms", "purpose": "Transições longos de superfície — var(--dur-long)." }
+    ],
+    "breakpoints": [
+      { "name": "editorial-sm", "value": "60rem" },
+      { "name": "icon-rail", "value": "48rem" },
+      { "name": "phone", "value": "40rem" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "O carimbo do sistema: ação principal da tela, Tinta de Selo sempre com a Regra do Décimo.",
+      "html": "<button class='ds-btn-primary'>Registrar<svg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M5 12h14'/><path d='m12 5 7 7-7 7'/></svg></button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:36px;padding:0 16px;border:1px solid var(--color-accent,oklch(45% 0.18 350));border-radius:2px;background:var(--color-accent,oklch(45% 0.18 350));color:var(--color-accent-ink,oklch(97% 0.006 245));font:500 0.875rem/1 var(--font-display,'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif);white-space:nowrap;cursor:pointer;transition:background-color 120ms cubic-bezier(0.16,1,0.3,1),color 120ms cubic-bezier(0.16,1,0.3,1);}.ds-btn-primary:hover{background:var(--color-accent-2,oklch(37% 0.16 350));border-color:var(--color-accent-2,oklch(37% 0.16 350));}.ds-btn-primary:active{transform:translateY(1px);}.ds-btn-primary:focus-visible{outline:2px solid var(--color-focus,oklch(46% 0.19 350));outline-offset:2px;}.ds-btn-primary:disabled{opacity:0.55;cursor:not-allowed;transform:none;}.ds-btn-primary svg{flex-shrink:0;}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ação de borda de tinta: o default do .btn, fundo transparente sobre papel.",
+      "html": "<button class='ds-btn-secondary'>Selecionar arquivos</button>",
+      "css": ".ds-btn-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:36px;padding:0 16px;border:1px solid var(--color-ink,oklch(16% 0.02 245));border-radius:2px;background:transparent;color:var(--color-ink,oklch(16% 0.02 245));font:500 0.875rem/1 var(--font-display,'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif);white-space:nowrap;cursor:pointer;transition:background-color 120ms cubic-bezier(0.16,1,0.3,1),color 120ms cubic-bezier(0.16,1,0.3,1);}.ds-btn-secondary:hover{background:var(--color-paper-3,oklch(77% 0.012 245));}.ds-btn-secondary:active{transform:translateY(1px);}.ds-btn-secondary:focus-visible{outline:2px solid var(--color-focus,oklch(46% 0.19 350));outline-offset:2px;}.ds-btn-secondary:disabled{opacity:0.55;cursor:not-allowed;transform:none;}"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Anulação: borda e texto vermelho-anulação em fundo transparente; nunca a ação primária.",
+      "html": "<button class='ds-btn-danger'>Remover</button>",
+      "css": ".ds-btn-danger{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:36px;padding:0 16px;border:1px solid var(--color-error,oklch(52% 0.19 27));border-radius:2px;background:transparent;color:var(--color-error,oklch(52% 0.19 27));font:500 0.875rem/1 var(--font-display,'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif);white-space:nowrap;cursor:pointer;transition:background-color 120ms cubic-bezier(0.16,1,0.3,1),color 120ms cubic-bezier(0.16,1,0.3,1);}.ds-btn-danger:hover{background:color-mix(in oklab, var(--color-error,oklch(52% 0.19 27)) 8%, transparent);}.ds-btn-danger:active{transform:translateY(1px);}.ds-btn-danger:focus-visible{outline:2px solid var(--color-focus,oklch(46% 0.19 350));outline-offset:2px;}"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Campo 'de documento': mono tabular dentro, placeholder em sans, foco que entra no papel.",
+      "html": "<div style='max-width:280px'><label class='ds-field-label'>Processo</label><input class='ds-field' id='ds-processo' type='text' value='' placeholder='0000000-0.2026' /></div>",
+      "css": ".ds-field-label{display:block;margin-bottom:4px;font:500 0.875rem/1.3 var(--font-body,'Newsreader',ui-serif,Georgia,serif);color:var(--color-muted,oklch(38% 0.016 245));}.ds-field{width:100%;min-height:36px;padding:0 12px;border:1px solid var(--color-muted,oklch(38% 0.016 245));border-radius:2px;background:var(--color-paper,oklch(84% 0.012 245));color:var(--color-ink,oklch(16% 0.02 245));font:400 0.875rem/1.4 var(--font-outlier,'IBM Plex Mono',ui-monospace,monospace);outline:2px solid transparent;outline-offset:-3px;box-sizing:border-box;}.ds-field::placeholder{color:var(--color-muted,oklch(38% 0.016 245));opacity:1;font-family:var(--font-display,'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif);}.ds-field:hover{border-color:var(--color-ink-2,oklch(24% 0.018 245));}.ds-field:focus-visible{outline-color:var(--color-focus,oklch(46% 0.19 350));}.ds-field[aria-invalid='true']{border-color:var(--color-error,oklch(52% 0.19 27));}.ds-field:disabled{opacity:0.55;cursor:not-allowed;}"
+    },
+    {
+      "name": "Ledger Sheet",
+      "kind": "card",
+      "refersTo": "ledger-table",
+      "description": "O componente-síntese: folha com faixa de tinta 2px, tabela pautada e contador no rodapé.",
+      "html": "<section class='ds-sheet'><div class='ds-sheet-head'><h2 style='margin:0;font:600 1.2rem/1.2 var(--font-display,'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif);letter-spacing:-0.02em;color:var(--color-ink,oklch(16% 0.02 245));'>Ferramentas</h2><span style='font:400 0.75rem/1.4 var(--font-outlier,'IBM Plex Mono',ui-monospace,monospace);color:var(--color-muted,oklch(38% 0.016 245));'>06 de novembro de 2026</span></div><table class='ds-ledger'><thead><tr><th>Ferramenta</th><th class='ds-num'>Registros</th></tr></thead><tbody><tr><td style='color:var(--color-ink,oklch(16% 0.02 245));font-weight:500;font-family:var(--font-body,'Newsreader',ui-serif,Georgia,serif);'>Upload de Arquivos</td><td class='ds-num'>12</td></tr><tr><td style='color:var(--color-ink,oklch(16% 0.02 245));font-weight:500;font-family:var(--font-body,'Newsreader',ui-serif,Georgia,serif);'>Etiquetas</td><td class='ds-num'>3</td></tr></tbody></table><div class='ds-sheet-foot'><span style='font-family:var(--font-outlier,'IBM Plex Mono',ui-monospace,monospace);'>5</span> ferramentas registradas</div></section>",
+      "css": ".ds-sheet{background:var(--color-sheet,oklch(93.5% 0.008 245));border-top:2px solid var(--color-ink,oklch(16% 0.02 245));font-family:var(--font-body,'Newsreader',ui-serif,Georgia,serif);color:var(--color-ink-2,oklch(24% 0.018 245));}.ds-sheet-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:16px 24px;flex-wrap:wrap;}.ds-ledger{width:100%;border-collapse:collapse;padding-left:24px;padding-right:24px;}.ds-ledger th{padding:4px 12px 4px 0;font:500 0.75rem/1.3 var(--font-body,'Newsreader',ui-serif,Georgia,serif);color:var(--color-muted,oklch(38% 0.016 245));text-align:left;white-space:nowrap;border-bottom:2px solid var(--color-rule-2,oklch(32% 0.018 240));}.ds-ledger td{padding:4px 12px 4px 0;border-bottom:1px solid var(--color-rule,oklch(73% 0.013 240));font-size:0.875rem;color:var(--color-ink-2,oklch(24% 0.018 245));white-space:nowrap;}.ds-ledger tbody tr:hover td{background:color-mix(in oklab, var(--color-paper-2,oklch(81% 0.012 245)) 55%, transparent);}.ds-ledger th.ds-num,.ds-ledger td.ds-num{font-family:var(--font-outlier,'IBM Plex Mono',ui-monospace,monospace);font-variant-numeric:tabular-nums;text-align:right;font-size:0.75rem;}.ds-sheet-foot{padding:8px 24px;border-top:1px solid var(--color-rule,oklch(73% 0.013 240));font:400 0.75rem/1.4 var(--font-body,'Newsreader',ui-serif,Georgia,serif);color:var(--color-muted,oklch(38% 0.016 245));padding-left:24px;padding-right:24px;}.ds-sheet-foot .ds-num{font-family:var(--font-outlier,'IBM Plex Mono',ui-monospace,monospace);font-variant-numeric:tabular-nums;}"
+    },
+    {
+      "name": "Status Pill",
+      "kind": "chip",
+      "refersTo": "status-pill",
+      "description": "Estado em duas cores apenas: borda/texto, fundo transparente para erro/sucesso; sem tons intermediários.",
+      "html": "<span style='display:inline-flex;gap:8px;'><span class='ds-pill'>Origem</span><span class='ds-pill ds-pill--success'>Importada</span><span class='ds-pill ds-pill--error'>Rejeitada</span></span>",
+      "css": ".ds-pill{display:inline-block;padding:4px 8px;border:1px solid var(--color-rule-2,oklch(32% 0.018 240));border-radius:2px;font:500 0.75rem/1.4 var(--font-body,'Newsreader',ui-serif,Georgia,serif);color:var(--color-ink-2,oklch(24% 0.018 245));background:var(--color-paper-2,oklch(81% 0.012 245));white-space:nowrap;}.ds-pill--error{border-color:var(--color-error,oklch(52% 0.19 27));color:var(--color-error,oklch(52% 0.19 27));background:transparent;}.ds-pill--success{border-color:var(--color-success,oklch(50% 0.12 150));color:var(--color-success,oklch(50% 0.12 150));background:transparent;}"
+    },
+    {
+      "name": "Notice",
+      "kind": "custom",
+      "refersTo": "notice",
+      "description": "Aviso que assina com linha: regra esquerda de 2px, sem fundo tintado, sem cartão.",
+      "html": "<div class='ds-notice'>3 de 12 arquivos não puderam ser registrados — verifique o XML da remessa 1664_20250514.</div>",
+      "css": ".ds-notice{padding:8px 0 8px 16px;border-left:2px solid var(--color-error,oklch(52% 0.19 27));font:400 0.875rem/1.5 var(--font-body,'Newsreader',ui-serif,Georgia,serif);color:var(--color-ink-2,oklch(24% 0.018 245));max-width:52ch;box-sizing:border-box;}"
+    },
+    {
+      "name": "Dropzone",
+      "kind": "custom",
+      "refersTo": "dropzone",
+      "description": "Alvo de arrasto de 280px: campo-a-preencher com banda de tinta; hover e drag em sintonia.",
+      "html": "<div class='ds-dropzone' tabindex='0' role='button' aria-label='Soltar arquivos'><div>Arraste o XML da remessa</div><small>ou clique para escolher · .xml, .pdf</small></div>",
+      "css": ".ds-dropzone{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:280px;padding:40px;background:var(--color-sheet,oklch(93.5% 0.008 245));border-top:2px solid var(--color-ink,oklch(16% 0.02 245));border-bottom:1px solid var(--color-rule,oklch(73% 0.013 240));border-left:1px solid var(--color-rule,oklch(73% 0.013 240));border-right:1px solid var(--color-rule,oklch(73% 0.013 240));color:var(--color-ink-2,oklch(24% 0.018 245));cursor:pointer;user-select:none;text-align:center;font-family:var(--font-body,'Newsreader',ui-serif,Georgia,serif);transition:background-color 120ms cubic-bezier(0.16,1,0.3,1),border-color 120ms cubic-bezier(0.16,1,0.3,1);box-sizing:border-box;}.ds-dropzone small{font-size:0.75rem;color:var(--color-muted,oklch(38% 0.016 245));}.ds-dropzone:hover{background:var(--color-paper,oklch(84% 0.012 245));border-left-color:var(--color-muted,oklch(38% 0.016 245));border-right-color:var(--color-muted,oklch(38% 0.016 245));}.ds-dropzone:focus-visible{outline:2px solid var(--color-focus,oklch(46% 0.19 350));outline-offset:2px;}.ds-dropzone--drag{background:var(--color-paper,oklch(84% 0.012 245));border-color:var(--color-accent,oklch(45% 0.18 350));}"
+    },
+    {
+      "name": "Sidebar Nav Item",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Linha full-width da faixa lateral: barra esquerda de 2px reserva Tinta de Selo para o item ativo.",
+      "html": "<div style='width:240px;background:oklch(81% 0.012 245);padding:8px 0;display:flex;flex-direction:column;'><button class='ds-nav-item' style='cursor:pointer;border:none;text-align:left;background:inherit;'><svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><rect width='7' height='7' x='3' y='3' rx='1'/><rect width='7' height='7' x='14' y='3' rx='1'/><rect width='7' height='7' x='14' y='14' rx='1'/><rect width='7' height='7' x='3' y='14' rx='1'/></svg><span>Dashboard</span></button><button class='ds-nav-item ds-nav-item--active' style='cursor:pointer;text-align:left;'><svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M12 3v18'/><path d='m17 8-5-5-5 5'/><path d='M21 16.5V21h-18v-4.5'/></svg><span>Upload de Arquivos</span></button></div>",
+      "css": ".ds-nav-item{width:100%;display:flex;align-items:center;gap:10px;padding:8px 20px;border:none;background:transparent;color:var(--color-ink-2,oklch(24% 0.018 245));font:500 0.875rem/1.4 var(--font-display,'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif);border-left:2px solid transparent;transition:color 150ms,background-color 150ms;box-sizing:border-box;}.ds-nav-item:hover{background:var(--color-paper-3,oklch(77% 0.012 245));color:var(--color-ink,oklch(16% 0.02 245));}.ds-nav-item:focus-visible{outline:2px solid var(--color-focus,oklch(46% 0.19 350));outline-offset:-2px;}.ds-nav-item--active{border-left:2px solid var(--color-accent,oklch(45% 0.18 350));background:var(--color-sheet,oklch(93.5% 0.008 245));color:var(--color-ink,oklch(16% 0.02 245));font-weight:600;}.ds-nav-item--active svg{color:var(--color-accent,oklch(45% 0.18 350));}.ds-nav-item svg{flex-shrink:0;color:var(--color-muted,oklch(38% 0.016 245));transition:color 150ms;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "A Caixa do Escrevente",
+    "overview": "O sistema visual do Cartório Helper é a caixa de ferramentas firmes do escrevente de cartório: cada tela é uma bandeja organizada, cada instrumento em seu nicho, tudo pronto para a mão no primeiro segundo do expediente. O mundo é de papel e tinta — fundo de Papel Arquivo (cinza frio, oklch(84% 0.012 245)) sobre o qual Folhas quase brancas carregam os dados — e a assinatura do sistema é a tabela-livro: uma folha retangular, fechada no topo por uma faixa de tinta de 2px, pautada por hairlines de 1px, com uma linha final que sempre registra a contagem ('5 ferramentas registradas'). Nada flutua: profundidade vem de faixa de tinta, linha pautada e camada tonal, nunca de sombra.\n\nA personalidade é precisa e discreta. O acento Tinta de Selo aparece em ~10% de qualquer tela (botão primário, item ativo da navegação, caret do teclado) e sua raridade é o argumento — carimbo raro deixa marca. Dados que poderiam vir de um documento oficial vivem em IBM Plex Mono com numerais tabulares; a interface vive no Hanken Grotesk; a voz humana vive na serifa Newsreader. Cantos são quadrados, bordas são sólidas — nunca tracejadas, nunca adesivas.",
+    "keyCharacteristics": [
+      "Papel Arquivo como pano de fundo; Folha (quase-branca) como superfície de dados.",
+      "A faixa de tinta de 2px no topo da folha é o gesto de profundidade do sistema inteiro.",
+      "Tabela pautada (ledger) como componente-síntese: cadastros, listas e dashboard são todos 'registros'.",
+      "Tinta de Selo (magenta oklch 350) com dose restrita; estados usam vermelho e verde de registro.",
+      "Tipografia tripla com papéis rígidos: sans de UI, serif de prosa, mono de documento.",
+      "Raio máximo 2px; sombras e bordas tracejadas proibidas; foco sempre visível."
+    ],
+    "rules": [
+      { "name": "A Regra do Décimo", "body": "Tinta de Selo ocupa no máximo um décimo de qualquer tela: um botão primário, a barra do item ativo, o caret. Sua escassez é o que faz cada aplicação parecer decisão de cartório.", "section": "colors" },
+      { "name": "A Regra da Anulação Sem Cartão", "body": "Erro e sucesso nunca criam fundos tintados, cartões coloridos ou ícones decorativos: assinam-se com linha (à esquerda de 2px em avisos), borda (pill, campo inválido) ou texto no vazio.", "section": "colors" },
+      { "name": "A Regra do Mono Como Documento", "body": "IBM Plex Mono é o rosto do arquivo: se o valor está num XML, numa averbação ou num contador, ele é mono tabular; UI e prosa nunca o pedem emprestado. Textareas recebem corpo serif; placeholders recebem sans.", "section": "typography" },
+      { "name": "A Regra da Faixa de Abertura", "body": "Todo bloco de superfície (.sheet, .dropzone) se abre com border-top: 2px solid tinta; a folha nunca é apenas um retângulo de cor mais clara — é uma página de livro aberta no termo.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do consumir tudo via tokens (var(--color-*), var(--space-*), var(--dur-*), var(--ease-*)) — nada de hex cru, rem folgado ou duração avulsa no código de tela.",
+      "Do fechar toda folha com contador no rodapé em mono (5 ferramentas registradas) — a contagem é parte do componente.",
+      "Do usar mono tabular (.num) para todo número que provém de documento: processo, selo, folha, CPF.",
+      "Do manter estados de erro em linha/borda (notice, aria-invalid, pill) — nunca em fundo tintado.",
+      "Do garantir foco visível: outline 2px tinta-de-selo-foco (offset +2 fora; -3px interior nos campos) — o outline transparente de 2px pré-definido evita saltos.",
+      "Do hospedar Hanken Grotesk, Newsreader e IBM Plex Mono localmente — o link de Google Fonts no index.html fere o contrato offline."
+    ],
+    "donts": [
+      "Don't adicionar sombras, glows, gradientes de profundidade ou backdrop-filter: --shadow-card: none é invariante; profundidade é faixa de tinta + hairline + camada tonal.",
+      "Don't arredondar além de 2px, nem inventar raio em folhas (--radius-card: 0).",
+      "Don't usar bordas tracejadas em qualquer lugar — dropzone incluído.",
+      "Don't pintar o acento em massa: sem cartões magenta, sem banners, sem fundo pintado de seção; a Regra do Décimo vale para telas inteiras.",
+      "Don't misturar MUI/PrimeReact na linguagem visual — os primitivos instalados podem ser usados internamente, mas o rosto é sempre .btn, .field, .sheet, .ledger.",
+      "Don't usar dots pulsantes, spinners animados ou skeletons para carregamento: a espera é uma linha de texto silenciosa ao lado do rótulo (aria-busy, cursor progress).",
+      "Don't ampliar o título além de 1.728rem nem usar peso de display além de 600: o app não tem hero, tem termo de abertura."
+    ]
+  }
+}

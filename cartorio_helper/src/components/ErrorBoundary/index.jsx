@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { Button, Typography } from '@mui/material';
 import { AlertTriangle, RotateCcw } from 'lucide-react';
 
 export default class ErrorBoundary extends Component {
@@ -24,37 +23,29 @@ export default class ErrorBoundary extends Component {
     if (this.state.hasError) {
       return (
         <div className="flex items-center justify-center h-full p-8">
-          <div className="text-center max-w-md">
-            <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4">
-              <AlertTriangle size={32} className="text-red-500" strokeWidth={1.5} />
-            </div>
-            <Typography variant="h5" sx={{ mb: 1 }}>
+          <div className="max-w-md w-full">
+            <h1 className="text-[var(--color-ink)] text-[var(--text-display)] flex items-center gap-2">
+              <AlertTriangle size={20} strokeWidth={1.75} aria-hidden="true" className="text-[var(--color-error)]" />
               Algo deu errado
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              Ocorreu um erro inesperado. Tente recarregar a página ou voltar ao início.
-            </Typography>
-            {this.state.error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4 text-left">
-                <Typography variant="caption" sx={{ fontFamily: '"JetBrains Mono", monospace', color: '#991b1b', wordBreak: 'break-all' }}>
-                  {this.state.error.message}
-                </Typography>
-              </div>
-            )}
-            <div className="flex items-center justify-center gap-3">
-              <Button
-                variant="contained"
-                startIcon={<RotateCcw size={16} />}
-                onClick={this.handleReset}
-              >
+            </h1>
+            <p className="mt-1 text-[var(--text-sm)] text-[var(--color-muted)]">
+              Ocorreu um erro inesperado nesta tela.
+            </p>
+            <p className="notice mt-4">
+              {String(this.state.error)}
+            </p>
+            <div className="mt-5 flex flex-wrap gap-2">
+              <button type="button" className="btn" onClick={this.handleReset}>
+                <RotateCcw size={15} strokeWidth={1.75} aria-hidden="true" />
                 Tentar novamente
-              </Button>
-              <Button
-                variant="outlined"
+              </button>
+              <button
+                type="button"
+                className="btn btn--quiet"
                 onClick={() => { this.handleReset(); window.location.hash = '#/dashboard'; }}
               >
-                Voltar ao Início
-              </Button>
+                Voltar para o início
+              </button>
             </div>
           </div>
         </div>

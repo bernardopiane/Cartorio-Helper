@@ -3,10 +3,10 @@ import Sidebar from "../../components/Sidebar";
 
 function NavigationLayout() {
   return (
-    <div className="h-full flex overflow-hidden">
+    <div className="h-full flex overflow-hidden bg-[var(--color-paper)]">
       <Sidebar />
-      <main className="flex-1 overflow-y-auto">
-        <div className="max-w-6xl mx-auto p-6">
+      <main id="main" className="flex-1 overflow-y-auto">
+        <div className="container px-6 py-8">
           <Outlet />
         </div>
       </main>
