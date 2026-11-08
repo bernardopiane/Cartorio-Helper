@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Upload as UploadIcon, Trash2, Download, Copy, Check, CircleCheck } from 'lucide-react';
-import { loadState, saveState } from '../../utils/storage.js';
+import { saveState } from '../../utils/storage.js';
 import { formatCurrency, parseMoney } from '../../utils/money.js';
 
 // exported for unit testing: this mapping is the remessa ledger's contract
@@ -127,9 +127,8 @@ const DISPLAY_COLUMNS = [
 
 export default function FileUploadTable() {
   const fileInputRef = useRef(null);
-  const [saved] = useState(() => loadState('upload') || { records: [], files: [] });
-  const [tableData, setTableData] = useState(saved.records || []);
-  const [fileNames, setFileNames] = useState(saved.files || []);
+  const [tableData, setTableData] = useState([]);
+  const [fileNames, setFileNames] = useState([]);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState(null);
   const [info, setInfo] = useState(null);
@@ -152,10 +151,21 @@ export default function FileUploadTable() {
     style: 'currency', currency: 'BRL',
   }).format(totalEmolumentos);
 
-  // the parse survives refresh: same records, same files, same day
+  // the Upload page opens empty by design — the parse is never restored.
+  // storage keeps only the handoff copy Etiquetas pre-fills livro/folha/termo
+  // from. Writes are transition-based, not first-run based: StrictMode
+  // double-runs effects in dev, so "mount writes nothing" must survive a
+  // second effect run (this only wipes the handoff when the user clears
+  // a non-empty ledger, never on mount).
+  const prevLenRef = useRef(0);
   useEffect(() => {
-    if (tableData.length === 0) saveState('upload', null);
-    else saveState('upload', { records: tableData, files: fileNames });
+    const hadRecords = prevLenRef.current > 0;
+    prevLenRef.current = tableData.length;
+    if (tableData.length === 0) {
+      if (hadRecords) saveState('upload', null);
+      return;
+    }
+    saveState('upload', { records: tableData, files: fileNames });
   }, [tableData, fileNames]);
 
   // the armed "limpar" stands down if the confirmation never comes
