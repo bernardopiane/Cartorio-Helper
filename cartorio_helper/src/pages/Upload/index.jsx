@@ -3,7 +3,8 @@ import { Upload as UploadIcon, Trash2, Download, Copy, Check, CircleCheck } from
 import { loadState, saveState } from '../../utils/storage.js';
 import { formatCurrency, parseMoney } from '../../utils/money.js';
 
-function getCodigo(child) {
+// exported for unit testing: this mapping is the remessa ledger's contract
+export function getCodigo(child) {
   switch (child.nodeName) {
     case 'RegistroNascimento': return "3001";
     case 'RegistroObito': return "3002";
@@ -27,7 +28,7 @@ function getProtocolo(child) {
   return child.getAttribute('NumeroDocumento') || '';
 }
 
-function getRecordData(child, isRCPN) {
+export function getRecordData(child, isRCPN) {
   const emolumentosNode = child.getElementsByTagName('Emolumentos')[0];
   const hasEmolumentos = emolumentosNode && (emolumentosNode.getElementsByTagName('ItemEmolumento').length > 0 || emolumentosNode.getAttribute('TipoCobranca') == "CC");
 
