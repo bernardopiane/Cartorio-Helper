@@ -21,10 +21,9 @@ export default function TextFormatter() {
   // same rules the tool has always applied — now writing to the output pane
   // instead of overwriting the source, so the original text survives
   const formatText = () => {
-    const formattedCorpo = corpo.replace(/\n/g, ' ').replace(/\s\s/g, ' ').replace(/"/g, "'");
+    const formattedCorpo = corpo.replace(/\n/g, ' ').replace(/\s{2,}/g, ' ').replace(/"/g, "'");
     const formattedMatricula = matricula
-      .replace(/\n/g, '')
-      .replace(/\s\s/g, '')
+      .replace(/\s+/g, '')
       .replace(/"/g, "'")
       .replace(/\./g, '')
       .replace(/-/g, '');
