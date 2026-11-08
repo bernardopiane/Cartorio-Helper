@@ -1,12 +1,29 @@
-# React + Vite
+# Cartório Helper
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ferramenta de mesa (desktop) para a rotina de um cartório — Electron + React + Vite, offline.
 
-Currently, two official plugins are available:
+| Ferramenta | O que faz |
+| --- | --- |
+| Upload de Arquivos XML | Lê remessas XML do sistema registral, monta a tabela auditável com Σ emolumentos e exporta CSV / copia a tabela |
+| Gerador de Etiquetas & Averbação | Minuta de averbação de CPF em conformidade com os Provimentos CNJ 149/2023 e 182/2024, preenchível pela última remessa |
+| Formatador de Texto | Higieniza texto colado de certidões: quebras, espaços e aspas |
+| Leitor de Certidões PDF | Extração local de campos de certidões de nascimento, casamento e óbito |
+| Consulta CRM / Médicos | Portal CREMERJ embutido (requer Electron — usa `<webview>`) |
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Desenvolvimento
 
-## Expanding the ESLint configuration
+```bash
+npm install
+npm run dev          # Vite em http://localhost:5173 (a aba Consulta só funciona no Electron)
+npm run test         # vitest
+npm run lint         # eslint
+npm run build        # bundle de produção em dist/
+npm run electron:dev # shell Electron apontando para o dev server
+npm run package      # build + electron-builder (NSIS / DMG / deb)
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Notas
+
+- Estado por fluxo é persistido em `localStorage` com chaves versionadas (`src/utils/storage.js`) — sem rede, sem back-end.
+- A tabela de remessa nunca perde a linha: registros repetidos (mesmo selo + código) não entram duas vezes.
+- CSP de produção em `index.html` é estrita; o dev relaxa inline-scripts apenas em memória (vite hook) para o Fast-Refresh do React.
