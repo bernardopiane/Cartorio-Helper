@@ -14,27 +14,36 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --color-error: oklch(46% 0.19 27);
-  --color-success: oklch(42% 0.12 150);
-  --color-paper: oklch(84% 0.012 245);
-  --color-paper-2: oklch(81% 0.012 245);
-  --color-paper-3: oklch(77% 0.012 245);
-  --color-ink: oklch(16% 0.020 245);
-  --color-ink-2: oklch(24% 0.018 245);
-  --color-muted: oklch(38% 0.016 245);
-  --color-rule: oklch(73% 0.013 240);
-  --color-rule-2: oklch(32% 0.018 240);
-  --color-accent: oklch(45% 0.180 350);
-  --color-accent-2: oklch(37% 0.160 350);
+  --color-error: oklch(50% 0.19 20);
+  --color-success: oklch(45% 0.12 150);
+  /* content surface: light lavender-tinted ground, white cards on top */
+  --color-paper: oklch(96.6% 0.010 285);
+  --color-paper-2: oklch(95.2% 0.012 285);
+  --color-paper-3: oklch(92.8% 0.014 285);
+  --color-ink: oklch(23% 0.035 276);
+  --color-ink-2: oklch(30% 0.030 276);
+  --color-muted: oklch(46% 0.024 276);
+  --color-rule: oklch(90.5% 0.012 285);
+  --color-rule-2: oklch(74% 0.018 276);
+  --color-accent: oklch(50% 0.190 4);
+  --color-accent-2: oklch(42% 0.175 4);
   --color-accent-ink: oklch(97% 0.006 245);
-  --color-focus: oklch(46% 0.190 350);
-  --color-sheet: oklch(93.5% 0.008 245);
+  --color-focus: oklch(50% 0.190 4);
+  /* cards are pure white on the lavender ground */
+  --color-sheet: oklch(100% 0 0);
+  /* the shell: deep navy rail + its room-scale text colors */
+  --color-sidebar: oklch(24% 0.048 276);
+  --color-sidebar-2: oklch(31% 0.052 276);
+  --color-sidebar-ink: oklch(95% 0.008 276);
+  --color-sidebar-ink-2: oklch(72% 0.022 276);
   --font-display: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Newsreader", ui-serif, Georgia, serif;
+  --font-body: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-outlier: "IBM Plex Mono", ui-monospace, monospace;
-  --radius-card: 0;
-  --radius-pill: 2px;
-  --shadow-card: none;
+  --radius-card: 10px;
+  --radius-btn: 8px;
+  --radius-field: 8px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 2px rgb(20 22 52 / 0.04), 0 10px 28px -16px rgb(20 22 52 / 0.14);
   --tracking-display: -0.02em;
 }
 :root {
